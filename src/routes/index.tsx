@@ -1,24 +1,30 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "મારો હિસાબ — ગુજરાતી હિસાબ એપ" },
+      { name: "description", content: "વ્યક્તિગત, ઘરખર્ચ, લોન, રોકાણ અને ભેંસ ડેરીનો સંપૂર્ણ હિસાબ — ગુજરાતીમાં." },
+      { property: "og:title", content: "મારો હિસાબ — ગુજરાતી હિસાબ એપ" },
+      { property: "og:description", content: "ડબલ-એન્ટ્રી હિસાબ, રિપોર્ટ અને નેટ વર્થ — ગુજરાતીમાં." },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => { if (data.session) navigate({ to: "/dashboard" }); });
+  }, [navigate]);
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="flex min-h-screen flex-col items-center justify-center bg-hero p-6 text-center text-primary-foreground">
+      <h1 className="text-6xl font-bold md:text-7xl">મારો હિસાબ</h1>
+      <p className="mt-4 max-w-md text-lg opacity-90">આવક, ખર્ચ, લોન, ઉધાર, રોકાણ, ઘર અને ભેંસ ડેરી — બધો હિસાબ એક જગ્યાએ, સાચી ડબલ-એન્ટ્રી સાથે.</p>
+      <Button asChild size="lg" variant="secondary" className="mt-8 h-14 px-10 text-lg"><Link to="/auth">શરૂ કરો</Link></Button>
     </div>
   );
 }
