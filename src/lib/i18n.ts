@@ -129,7 +129,7 @@ export const EN: Record<string, string> = {
   "ચોખ્ખી કમાણી": "Net earnings", "બેલેન્સ શીટ": "Balance sheet", "કુલ મિલકત": "Total assets", "કુલ દેવું (લોન સહિત)": "Total liabilities (incl. loans)",
   "વિભાગ મુજબ નફો / ખર્ચ": "Profit / expense by section", "આવક વિ. ખર્ચ": "Income vs expenses", "દૈનિક": "Daily", "માસિક": "Monthly", "વાર્ષિક": "Yearly",
   "સમયગાળો": "Period", "ચોખ્ખું": "Net", "ખાતા મુજબ (જનરલ લેજર સારાંશ)": "By account (general ledger summary)", "બેલેન્સ": "Balance",
-  "સારાંશ": "Summary", "રોકાણ": "Investments", "બાકી લોન": "Outstanding loans", "લોન બાદ કમાણી": "Earnings after loans", "નફો/નુકસાન": "Profit/loss",
+  "સારાંશ": "Summary", "બાકી લોન": "Outstanding loans", "લોન બાદ કમાણી": "Earnings after loans", "નફો/નુકસાન": "Profit/loss",
   "સમયગાળાનો ફેરફાર": "Period change", "અંતિમ બેલેન્સ": "Closing balance", "ઉધાર (Dr)": "Debit (Dr)", "જમા (Cr)": "Credit (Cr)", "સ્થિતિ": "Status",
   // default account names
   "બેંક ખાતું": "Bank account", "UPI વોલેટ": "UPI wallet", "શરૂઆતની મૂડી": "Opening capital", "પગાર": "Salary", "અન્ય આવક": "Other income",
