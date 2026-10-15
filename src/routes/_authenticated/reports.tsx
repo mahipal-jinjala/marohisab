@@ -42,7 +42,7 @@ function Reports() {
   const live = accounts.filter((a) => Math.abs(bal(a.id).closing) > 0.004 || Math.abs(bal(a.id).period) > 0.004);
 
   const exportAll = () => downloadCSV(`report-${from}-${to}.csv`, [
-    ["મારો હિસાબ રિપોર્ટ", `${from} થી ${to}`], [],
+    ["મારો હિસાબ રિપોર્ટ", `${from} – ${to}`], [],
     ["સારાંશ", "રકમ"],
     ["આવક", t.income], ["ખર્ચ", t.expense], ["ખર્ચ પછીની કમાણી", t.earnings],
     ["રોકડ", t.cash], ["બેંક", t.bank], ["UPI", t.upi], ["બાકી લોન", t.loans], ["બાકી વ્યક્તિગત લોન", t.personalLoans],
