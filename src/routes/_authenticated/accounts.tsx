@@ -1,3 +1,4 @@
+import { tr } from "@/lib/i18n";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Card, Loading, PageHeader, useOpenTxn } from "@/components/AppShell";
@@ -6,7 +7,7 @@ import type { AccType, Subtype } from "@/lib/accounting";
 import { monthStartISO, todayISO, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/accounts")({
-  head: () => ({ meta: [{ title: "ખાતાં — મારો હિસાબ" }, { name: "description", content: "ખાતાવહી અને ખાતાંઓની યાદી." }] }),
+  head: () => ({ meta: [{ title: tr("ખાતાં — મારો હિસાબ") }, { name: "description", content: tr("ખાતાવહી અને ખાતાંઓની યાદી.") }] }),
   component: Accounts,
 });
 
@@ -21,14 +22,14 @@ function Accounts() {
   const open = useOpenTxn();
   return (
     <div className="space-y-4">
-      <PageHeader title="ખાતાં (ચાર્ટ ઓફ એકાઉન્ટ્સ)">
-        <Button variant="outline" onClick={() => open({ kind: "opening_asset" })}>શરૂઆતનું બેલેન્સ</Button>
-        <NewAccountButton subtypes={ALL} withParty label="નવું ખાતું / કેટેગરી" />
+      <PageHeader title={tr("ખાતાં (ચાર્ટ ઓફ એકાઉન્ટ્સ)")}>
+        <Button variant="outline" onClick={() => open({ kind: "opening_asset" })}>{tr("શરૂઆતનું બેલેન્સ")}</Button>
+        <NewAccountButton subtypes={ALL} withParty label={tr("નવું ખાતું / કેટેગરી")} />
       </PageHeader>
       {isLoading ? <Loading /> : (
         <div className="grid gap-4 lg:grid-cols-2">
           {GROUPS.map((g) => (
-            <Card key={g.t} title={g.l}><AccountTable accounts={accounts.filter((a) => a.type === g.t && !a.is_archived)} totals={totals} period={g.period} /></Card>
+            <Card key={g.t} title={tr(g.l)}><AccountTable accounts={accounts.filter((a) => a.type === g.t && !a.is_archived)} totals={totals} period={g.period} /></Card>
           ))}
         </div>
       )}

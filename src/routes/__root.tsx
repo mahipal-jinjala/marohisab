@@ -1,3 +1,4 @@
+import { tr } from "@/lib/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -80,8 +81,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "મારો હિસાબ" },
-      { name: "description", content: "ગુજરાતી વ્યક્તિગત અને વ્યવસાયિક હિસાબ એપ" },
+      { title: tr("મારો હિસાબ") },
+      { name: "description", content: tr("ગુજરાતી વ્યક્તિગત અને વ્યવસાયિક હિસાબ એપ") },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },

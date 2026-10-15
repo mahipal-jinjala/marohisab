@@ -1,3 +1,4 @@
+import { tr } from "@/lib/i18n";
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
@@ -34,29 +35,29 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-h-screen">
         <aside className={`sticky top-0 hidden h-screen shrink-0 flex-col bg-sidebar text-sidebar-foreground transition-all md:flex ${collapsed ? "w-20" : "w-64"}`}>
           <div className="flex items-center justify-between p-4">
-            {!collapsed && <span className="font-display text-2xl font-bold">મારો હિસાબ</span>}
-            <button aria-label="સાઇડબાર" className="rounded-lg p-2 hover:bg-sidebar-accent" onClick={() => setCollapsed(!collapsed)}>
+            {!collapsed && <span className="font-display text-2xl font-bold">{tr("મારો હિસાબ")}</span>}
+            <button aria-label={tr("સાઇડબાર")} className="rounded-lg p-2 hover:bg-sidebar-accent" onClick={() => setCollapsed(!collapsed)}>
               {collapsed ? <PanelLeft className="size-5" /> : <PanelLeftClose className="size-5" />}
             </button>
           </div>
           <nav className="flex-1 space-y-1 px-3">
             {NAV.map(({ to, label, icon: Icon }) => (
-              <Link key={to} to={to} title={label}
+              <Link key={to} to={to} title={tr(label)}
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-base hover:bg-sidebar-accent"
                 activeProps={{ className: "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary" }}>
-                <Icon className="size-5 shrink-0" />{!collapsed && label}
+                <Icon className="size-5 shrink-0" />{!collapsed && tr(label)}
               </Link>
             ))}
           </nav>
           <button onClick={logout} className="m-3 flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-sidebar-accent">
-            <LogOut className="size-5" />{!collapsed && "બહાર નીકળો"}
+            <LogOut className="size-5" />{!collapsed && tr("બહાર નીકળો")}
           </button>
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-background/90 px-4 py-3 backdrop-blur md:hidden">
-            <span className="font-display text-xl font-bold text-primary">મારો હિસાબ</span>
-            <Button variant="ghost" size="icon" aria-label="બહાર નીકળો" onClick={logout}><LogOut className="size-5" /></Button>
+            <span className="font-display text-xl font-bold text-primary">{tr("મારો હિસાબ")}</span>
+            <Button variant="ghost" size="icon" aria-label={tr("બહાર નીકળો")} onClick={logout}><LogOut className="size-5" /></Button>
           </header>
           <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-4 md:px-8 md:pb-10 md:pt-8">{children}</main>
         </div>
@@ -64,15 +65,15 @@ export function AppShell({ children }: { children: ReactNode }) {
         <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t bg-card pb-[env(safe-area-inset-bottom)] md:hidden">
           {NAV.filter((n) => MOBILE.includes(n.to)).slice(0, 2).map(({ to, label, icon: Icon }) => (
             <Link key={to} to={to} className="flex flex-col items-center gap-0.5 py-2 text-xs text-muted-foreground" activeProps={{ className: "text-primary font-semibold" }}>
-              <Icon className="size-6" />{label}
+              <Icon className="size-6" />{tr(label)}
             </Link>
           ))}
-          <button aria-label="નવો વ્યવહાર" onClick={() => setPreset({ kind: "expense" })} className="flex items-center justify-center">
+          <button aria-label={tr("નવો વ્યવહાર")} onClick={() => setPreset({ kind: "expense" })} className="flex items-center justify-center">
             <span className="-mt-6 flex size-14 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-card"><Plus className="size-7" /></span>
           </button>
           {NAV.filter((n) => MOBILE.includes(n.to)).slice(2).map(({ to, label, icon: Icon }) => (
             <Link key={to} to={to} className="flex flex-col items-center gap-0.5 py-2 text-xs text-muted-foreground" activeProps={{ className: "text-primary font-semibold" }}>
-              <Icon className="size-6" />{label}
+              <Icon className="size-6" />{tr(label)}
             </Link>
           ))}
         </nav>
@@ -87,7 +88,7 @@ export function MobileMore() {
     <div className="mb-4 flex gap-2 overflow-x-auto pb-1 md:hidden">
       {NAV.filter((n) => !MOBILE.includes(n.to)).map(({ to, label, icon: Icon }) => (
         <Link key={to} to={to} className="flex shrink-0 items-center gap-1.5 rounded-full border bg-card px-3 py-2 text-sm"
-          activeProps={{ className: "border-primary text-primary" }}><Icon className="size-4" />{label}</Link>
+          activeProps={{ className: "border-primary text-primary" }}><Icon className="size-4" />{tr(label)}</Link>
       ))}
     </div>
   );
@@ -121,18 +122,18 @@ export function DateRange({ from, to, onChange }: { from: string; to: string; on
   const d = new Date();
   const iso = (x: Date) => x.toLocaleDateString("en-CA");
   const presets = [
-    { l: "આજે", f: iso(d), t: iso(d) },
-    { l: "આ મહિને", f: iso(new Date(d.getFullYear(), d.getMonth(), 1)), t: iso(d) },
-    { l: "આ વર્ષે", f: iso(new Date(d.getFullYear(), 0, 1)), t: iso(d) },
-    { l: "બધું", f: "2000-01-01", t: iso(d) },
+    { l: tr("આજે"), f: iso(d), t: iso(d) },
+    { l: tr("આ મહિને"), f: iso(new Date(d.getFullYear(), d.getMonth(), 1)), t: iso(d) },
+    { l: tr("આ વર્ષે"), f: iso(new Date(d.getFullYear(), 0, 1)), t: iso(d) },
+    { l: tr("બધું"), f: "2000-01-01", t: iso(d) },
   ];
   return (
     <div className="flex flex-wrap items-center gap-2">
       {presets.map((p) => (
         <Button key={p.l} size="sm" variant={from === p.f && to === p.t ? "default" : "outline"} onClick={() => onChange(p.f, p.t)}>{p.l}</Button>
       ))}
-      <input type="date" className="h-9 rounded-lg border bg-card px-2 text-sm" value={from} onChange={(e) => onChange(e.target.value, to)} aria-label="થી" />
-      <input type="date" className="h-9 rounded-lg border bg-card px-2 text-sm" value={to} onChange={(e) => onChange(from, e.target.value)} aria-label="સુધી" />
+      <input type="date" className="h-9 rounded-lg border bg-card px-2 text-sm" value={from} onChange={(e) => onChange(e.target.value, to)} aria-label={tr("થી")} />
+      <input type="date" className="h-9 rounded-lg border bg-card px-2 text-sm" value={to} onChange={(e) => onChange(from, e.target.value)} aria-label={tr("સુધી")} />
     </div>
   );
 }
@@ -144,4 +145,4 @@ export const Card = ({ title, children, action }: { title?: string; children: Re
   </section>
 );
 
-export const Loading = () => <div className="py-16 text-center text-muted-foreground">લોડ થઈ રહ્યું છે…</div>;
+export const Loading = () => <div className="py-16 text-center text-muted-foreground">{tr("લોડ થઈ રહ્યું છે…")}</div>;
