@@ -26,10 +26,10 @@ function Txns() {
   const list = useMemo(() => data.filter((e) =>
     (!kind || e.kind === kind) &&
     (!q || `${e.description ?? ""} ${e.party ?? ""} ${e.amount}`.toLowerCase().includes(q.toLowerCase()))), [data, kind, q]);
-  const name = (id?: string) => accounts.find((a) => a.id === id)?.name ?? "";
+  const name = (id?: string) => tr(accounts.find((a) => a.id === id)?.name ?? "");
   const exportCsv = () => downloadCSV(`vyavhar-${from}-${to}.csv`, [
     [tr("તારીખ"), tr("પ્રકાર"), tr("વિભાગ"), tr("નોંધ"), tr("પક્ષ"), tr("ઉધાર (Dr)"), tr("જમા (Cr)"), tr("રકમ"), tr("સ્થિતિ")],
-    ...list.map((e) => [e.entry_date, tr(KINDS[e.kind]?.label) ?? e.kind, tr(SECTION_LABEL[e.section]), e.description ?? "", e.party ?? "",
+    ...list.map((e) => [e.entry_date, tr(KINDS[e.kind]?.label) ?? e.kind, tr(SECTION_LABEL[e.section]), tr(e.description ?? ""), e.party ?? "",
       name(e.journal_lines.find((l) => Number(l.debit) > 0)?.account_id), name(e.journal_lines.find((l) => Number(l.credit) > 0)?.account_id),
       Number(e.amount), e.reversed_by ? tr("રદ") : e.reversal_of ? tr("રદ એન્ટ્રી") : tr("સક્રિય")]),
   ]);

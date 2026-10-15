@@ -13,8 +13,8 @@ export const Route = createFileRoute("/_authenticated/accounts")({
 
 const ALL: Subtype[] = ["cash", "bank", "upi", "income", "expense", "receivable", "investment", "fixed_asset", "loan_payable", "other_liability", "equity"];
 const GROUPS: { t: AccType; l: string; period?: boolean }[] = [
-  { t: "asset", l: tr("મિલકત (Assets)") }, { t: "liability", l: tr("દેવું (Liabilities)") },
-  { t: "income", l: tr("આવક — આ મહિને"), period: true }, { t: "expense", l: tr("ખર્ચ — આ મહિને"), period: true }, { t: "equity", l: tr("મૂડી") },
+  { t: "asset", l: "મિલકત (Assets)" }, { t: "liability", l: "દેવું (Liabilities)" },
+  { t: "income", l: "આવક — આ મહિને", period: true }, { t: "expense", l: "ખર્ચ — આ મહિને", period: true }, { t: "equity", l: "મૂડી" },
 ];
 
 function Accounts() {
@@ -29,7 +29,7 @@ function Accounts() {
       {isLoading ? <Loading /> : (
         <div className="grid gap-4 lg:grid-cols-2">
           {GROUPS.map((g) => (
-            <Card key={g.t} title={g.l}><AccountTable accounts={accounts.filter((a) => a.type === g.t && !a.is_archived)} totals={totals} period={g.period} /></Card>
+            <Card key={g.t} title={tr(g.l)}><AccountTable accounts={accounts.filter((a) => a.type === g.t && !a.is_archived)} totals={totals} period={g.period} /></Card>
           ))}
         </div>
       )}

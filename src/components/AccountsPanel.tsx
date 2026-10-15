@@ -20,7 +20,7 @@ export function AccountTable({ accounts, totals, period = false }: { accounts: A
         return (
           <li key={a.id} className="flex items-center gap-3 py-2.5">
             <div className="min-w-0 flex-1">
-              <p className="truncate font-medium">{a.name}{a.party ? ` · ${a.party}` : ""}</p>
+              <p className="truncate font-medium">{tr(a.name)}{a.party ? ` · ${a.party}` : ""}</p>
               <p className="text-xs text-muted-foreground">{tr(SUBTYPE_LABEL[a.subtype])} · {tr(SECTION_LABEL[a.section])}{a.interest_rate ? ` · ${a.interest_rate}% ${tr("વ્યાજ")}` : ""}</p>
             </div>
             <span className="font-bold tabular-nums">{formatINR(v)}</span>

@@ -13,8 +13,8 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 });
 
 const QUICK: { k: Kind; l: string }[] = [
-  { k: "income", l: tr("+ આવક") }, { k: "expense", l: tr("− ખર્ચ") }, { k: "loan_taken", l: tr("લોન લીધી") },
-  { k: "loan_repay", l: tr("લોન ચૂકવી") }, { k: "lend", l: tr("ઉધાર આપ્યા") }, { k: "invest", l: tr("રોકાણ") }, { k: "transfer", l: tr("ટ્રાન્સફર") },
+  { k: "income", l: "+ આવક" }, { k: "expense", l: "− ખર્ચ" }, { k: "loan_taken", l: "લોન લીધી" },
+  { k: "loan_repay", l: "લોન ચૂકવી" }, { k: "lend", l: "ઉધાર આપ્યા" }, { k: "invest", l: "રોકાણ" }, { k: "transfer", l: "ટ્રાન્સફર" },
 ];
 
 function Dashboard() {
@@ -50,7 +50,7 @@ function Dashboard() {
       )}
       <Card title={tr("ઝડપી ઉમેરો")}>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-          {QUICK.map((q) => <Button key={q.k} size="lg" variant={q.k === "income" ? "default" : "outline"} className="h-14 text-base" onClick={() => open({ kind: q.k })}>{q.l}</Button>)}
+          {QUICK.map((q) => <Button key={q.k} size="lg" variant={q.k === "income" ? "default" : "outline"} className="h-14 text-base" onClick={() => open({ kind: q.k })}>{tr(q.l)}</Button>)}
         </div>
       </Card>
       <Card title={tr("તાજેતરના વ્યવહારો")}>

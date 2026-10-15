@@ -12,15 +12,15 @@ const Ctx = createContext<(p: TxnPreset) => void>(() => {});
 export const useOpenTxn = () => useContext(Ctx);
 
 const NAV = [
-  { to: "/dashboard", label: tr("ડેશબોર્ડ"), icon: LayoutDashboard },
-  { to: "/transactions", label: tr("વ્યવહારો"), icon: List },
-  { to: "/accounts", label: tr("ખાતાં"), icon: Wallet },
-  { to: "/loans", label: tr("લોન / ઉધાર"), icon: HandCoins },
-  { to: "/investments", label: tr("રોકાણ"), icon: TrendingUp },
-  { to: "/household", label: tr("ઘરખર્ચ"), icon: ShoppingBasket },
-  { to: "/ghar", label: tr("ઘર વેરેન્ટેજ"), icon: Home },
-  { to: "/dairy", label: tr("ભેંસ ડેરી"), icon: Milk },
-  { to: "/reports", label: tr("રિપોર્ટ"), icon: BarChart3 },
+  { to: "/dashboard", label: "ડેશબોર્ડ", icon: LayoutDashboard },
+  { to: "/transactions", label: "વ્યવહારો", icon: List },
+  { to: "/accounts", label: "ખાતાં", icon: Wallet },
+  { to: "/loans", label: "લોન / ઉધાર", icon: HandCoins },
+  { to: "/investments", label: "રોકાણ", icon: TrendingUp },
+  { to: "/household", label: "ઘરખર્ચ", icon: ShoppingBasket },
+  { to: "/ghar", label: "ઘર વેરેન્ટેજ", icon: Home },
+  { to: "/dairy", label: "ભેંસ ડેરી", icon: Milk },
+  { to: "/reports", label: "રિપોર્ટ", icon: BarChart3 },
 ] as const;
 const MOBILE = ["/dashboard", "/transactions", "/loans", "/reports"];
 
@@ -42,10 +42,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
           <nav className="flex-1 space-y-1 px-3">
             {NAV.map(({ to, label, icon: Icon }) => (
-              <Link key={to} to={to} title={label}
+              <Link key={to} to={to} title={tr(label)}
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-base hover:bg-sidebar-accent"
                 activeProps={{ className: "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary" }}>
-                <Icon className="size-5 shrink-0" />{!collapsed && label}
+                <Icon className="size-5 shrink-0" />{!collapsed && tr(label)}
               </Link>
             ))}
           </nav>
@@ -65,7 +65,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t bg-card pb-[env(safe-area-inset-bottom)] md:hidden">
           {NAV.filter((n) => MOBILE.includes(n.to)).slice(0, 2).map(({ to, label, icon: Icon }) => (
             <Link key={to} to={to} className="flex flex-col items-center gap-0.5 py-2 text-xs text-muted-foreground" activeProps={{ className: "text-primary font-semibold" }}>
-              <Icon className="size-6" />{label}
+              <Icon className="size-6" />{tr(label)}
             </Link>
           ))}
           <button aria-label={tr("નવો વ્યવહાર")} onClick={() => setPreset({ kind: "expense" })} className="flex items-center justify-center">
@@ -73,7 +73,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
           {NAV.filter((n) => MOBILE.includes(n.to)).slice(2).map(({ to, label, icon: Icon }) => (
             <Link key={to} to={to} className="flex flex-col items-center gap-0.5 py-2 text-xs text-muted-foreground" activeProps={{ className: "text-primary font-semibold" }}>
-              <Icon className="size-6" />{label}
+              <Icon className="size-6" />{tr(label)}
             </Link>
           ))}
         </nav>
@@ -88,7 +88,7 @@ export function MobileMore() {
     <div className="mb-4 flex gap-2 overflow-x-auto pb-1 md:hidden">
       {NAV.filter((n) => !MOBILE.includes(n.to)).map(({ to, label, icon: Icon }) => (
         <Link key={to} to={to} className="flex shrink-0 items-center gap-1.5 rounded-full border bg-card px-3 py-2 text-sm"
-          activeProps={{ className: "border-primary text-primary" }}><Icon className="size-4" />{label}</Link>
+          activeProps={{ className: "border-primary text-primary" }}><Icon className="size-4" />{tr(label)}</Link>
       ))}
     </div>
   );

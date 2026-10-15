@@ -83,7 +83,7 @@ export function TxnDialog({ preset, onClose }: { preset: TxnPreset | null; onClo
   };
 
   const opt = (a: (typeof accounts)[number]) => (
-    <option key={a.id} value={a.id}>{a.name} · {tr(SUBTYPE_LABEL[a.subtype])}{a.section !== "personal" ? ` · ${tr(SECTION_LABEL[a.section])}` : ""}</option>
+    <option key={a.id} value={a.id}>{tr(a.name)} · {tr(SUBTYPE_LABEL[a.subtype])}{a.section !== "personal" ? ` · ${tr(SECTION_LABEL[a.section])}` : ""}</option>
   );
 
   return (

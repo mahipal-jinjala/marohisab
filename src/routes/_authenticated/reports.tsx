@@ -53,7 +53,7 @@ function Reports() {
     ...(Object.keys(SECTION_LABEL) as Section[]).map((s) => [tr(SECTION_LABEL[s]), t.bySection[s].income, t.bySection[s].expense, t.bySection[s].profit]), [],
     [tr("સમયગાળો"), tr("આવક"), tr("ખર્ચ"), tr("ચોખ્ખું")], ...periods.map(([k, v]) => [k, v.inc, v.exp, v.inc - v.exp]), [],
     [tr("ખાતું"), tr("પ્રકાર"), tr("વિભાગ"), tr("સમયગાળાનો ફેરફાર"), tr("અંતિમ બેલેન્સ")],
-    ...live.map((a) => [a.name, tr(SUBTYPE_LABEL[a.subtype]), tr(SECTION_LABEL[a.section]), bal(a.id).period, bal(a.id).closing]),
+    ...live.map((a) => [tr(a.name), tr(SUBTYPE_LABEL[a.subtype]), tr(SECTION_LABEL[a.section]), bal(a.id).period, bal(a.id).closing]),
   ]);
 
   const row = (l: string, v: number, strong = false) => (
@@ -101,7 +101,7 @@ function Reports() {
         <div className="overflow-x-auto"><table className="w-full text-sm">
           <thead><tr className="text-left text-muted-foreground"><th className="py-2tr(">{tr("ખાતું")}</th><th>{tr("પ્રકાર")}</th><th className=")text-righttr(">{tr("સમયગાળો")}</th><th className=")text-right">{tr("બેલેન્સ")}</th></tr></thead>
           <tbody>{live.map((a) => (
-            <tr key={a.id} className="border-t"><td className="py-2">{a.name}</td><td className="text-muted-foreground">{tr(SUBTYPE_LABEL[a.subtype])} · {tr(SECTION_LABEL[a.section])}</td>
+            <tr key={a.id} className="border-t"><td className="py-2">{tr(a.name)}</td><td className="text-muted-foreground">{tr(SUBTYPE_LABEL[a.subtype])} · {tr(SECTION_LABEL[a.section])}</td>
               <td className="text-right tabular-nums">{formatINR(bal(a.id).period)}</td><td className="text-right font-semibold tabular-nums">{formatINR(bal(a.id).closing)}</td></tr>))}</tbody>
         </table></div>
       </Card>
