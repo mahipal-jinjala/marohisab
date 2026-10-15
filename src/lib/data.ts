@@ -41,7 +41,7 @@ export function useTotals(from: string, to: string) {
   return { accounts: a.data ?? [], totals, isLoading: a.isLoading || s.isLoading, error: a.error || s.error };
 }
 
-export function useEntries(opts: { from?: string; to?: string; section?: Section; limit?: number } = {}) {
+export function useEntries(opts: { from?: string; to?: string; section?: Section | undefined; limit?: number } = {}) {
   return useQuery({
     queryKey: ["entries", opts],
     queryFn: async () => {
@@ -72,11 +72,11 @@ export function useInvalidate() {
 export function useRecord() {
   const inv = useInvalidate();
   return useMutation({
-    mutationFn: async ({ input, replaces }: { input: TxnInput; replaces?: string }) => {
+    mutationFn: async ({ input, replaces }: { input: TxnInput; replaces?: string | undefined }) => {
       const { data, error } = await supabase.rpc("record_transaction", {
         p_kind: input.kind, p_date: input.date, p_amount: input.amount, p_debit: input.debit, p_credit: input.credit,
-        p_description: input.description ?? undefined, p_party: input.party ?? undefined, p_section: input.section,
-        p_idempotency_key: input.key, p_extra_amount: input.extra ?? 0, p_extra_account: input.extraAccount ?? undefined,
+        ...(input.description ? { p_description: input.description } : {}), ...(input.party ? { p_party: input.party } : {}), p_section: input.section,
+        p_idempotency_key: input.key, p_extra_amount: input.extra ?? 0, ...(input.extraAccount ? { p_extra_account: input.extraAccount } : {}),
       });
       if (error) throw error;
       if (replaces) {

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { SECTION_LABEL, SUBTYPE_LABEL, formatINR, type Account, type Section, type Subtype, type Totals } from "@/lib/accounting";
 import { errMsg, useCreateAccount, useUpdateAccount } from "@/lib/data";
 
-export function AccountTable({ accounts, totals, period = false }: { accounts: Account[]; totals: Totals | null; period?: boolean }) {
+export function AccountTable({ accounts, totals, period = false }: { accounts: Account[]; totals: Totals | null; period?: boolean | undefined }) {
   const upd = useUpdateAccount();
   if (!accounts.length) return <p className="py-6 text-center text-muted-foreground">કોઈ ખાતું નથી</p>;
   return (
@@ -40,7 +40,7 @@ export function NewAccountButton({ subtypes, section = "personal", label = "ન�
   { subtypes: Subtype[]; section?: Section; label?: string; withParty?: boolean }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [subtype, setSubtype] = useState<Subtype>(subtypes[0]);
+  const [subtype, setSubtype] = useState<Subtype>(subtypes[0]!);
   const [sec, setSec] = useState<Section>(section);
   const [party, setParty] = useState("");
   const [rate, setRate] = useState("");
@@ -48,7 +48,7 @@ export function NewAccountButton({ subtypes, section = "personal", label = "ન�
   const sel = "h-12 w-full rounded-xl border bg-card px-3";
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return toast.error("નામ દાખલ કરો");
+    if (!name.trim()) { toast.error("નામ દાખલ કરો"); return; }
     try {
       await create.mutateAsync({ name, subtype, section: sec, party, interest_rate: rate ? Number(rate) : null });
       toast.success("ખાતું બન્યું"); setOpen(false); setName(""); setParty(""); setRate("");
