@@ -1,3 +1,4 @@
+import { tr } from "@/lib/i18n";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Card, Loading, PageHeader, Stat, useOpenTxn } from "@/components/AppShell";
@@ -7,7 +8,7 @@ import { formatINR } from "@/lib/accounting";
 import { todayISO, useEntries, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/loans")({
-  head: () => ({ meta: [{ title: "લોન અને ઉધાર — મારો હિસાબ" }, { name: "description", content: "લીધેલી લોન, આપેલ ઉધાર, ચૂકવણી અને વ્યાજ." }] }),
+  head: () => ({ meta: [{ title: tr("લોન અને ઉધાર — મારો હિસાબ") }, { name: "description", content: tr("લીધેલી લોન, આપેલ ઉધાર, ચૂકવણી અને વ્યાજ.") }] }),
   component: Loans,
 });
 
@@ -20,30 +21,30 @@ function Loans() {
   const live = accounts.filter((a) => !a.is_archived);
   return (
     <div className="space-y-4">
-      <PageHeader title="લોન અને ઉધાર">
-        <NewAccountButton subtypes={["loan_payable", "other_liability"]} withParty label="નવી લોન" />
-        <NewAccountButton subtypes={["receivable"]} withParty label="નવું લેણું" />
+      <PageHeader title={tr("લોન અને ઉધાર")}>
+        <NewAccountButton subtypes={["loan_payable", "other_liability"]} withParty label={tr("નવી લોન")} />
+        <NewAccountButton subtypes={["receivable"]} withParty label={tr("નવું લેણું")} />
       </PageHeader>
       {isLoading || !totals ? <Loading /> : (
         <>
           <div className="grid gap-3 sm:grid-cols-3">
-            <Stat tone="bad" label="બાકી લોન (કુલ)" value={formatINR(totals.loans)} />
-            <Stat tone="bad" label="બાકી વ્યક્તિગત લોન" value={formatINR(totals.personalLoans)} />
-            <Stat tone="good" label="લેવાના બાકી (ઉધાર આપેલ)" value={formatINR(totals.receivables)} />
+            <Stat tone="bad" label={tr("બાકી લોન (કુલ)")} value={formatINR(totals.loans)} />
+            <Stat tone="bad" label={tr("બાકી વ્યક્તિગત લોન")} value={formatINR(totals.personalLoans)} />
+            <Stat tone="good" label={tr("લેવાના બાકી (ઉધાર આપેલ)")} value={formatINR(totals.receivables)} />
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            <Button size="lg" className="h-14" onClick={() => open({ kind: "loan_taken" })}>લોન લીધી</Button>
-            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "loan_repay" })}>લોન ચૂકવી + વ્યાજ</Button>
-            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "lend" })}>ઉધાર આપ્યા</Button>
-            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "lend_collect" })}>ઉધાર પાછા મળ્યા</Button>
+            <Button size="lg" className="h-14" onClick={() => open({ kind: "loan_taken" })}>{tr("લોન લીધી")}</Button>
+            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "loan_repay" })}>{tr("લોન ચૂકવી + વ્યાજ")}</Button>
+            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "lend" })}>{tr("ઉધાર આપ્યા")}</Button>
+            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "lend_collect" })}>{tr("ઉધાર પાછા મળ્યા")}</Button>
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
-            <Card title="લીધેલી લોન"><AccountTable accounts={live.filter((a) => a.type === "liability")} totals={totals} /></Card>
-            <Card title="આપેલ ઉધાર (લેણું)"><AccountTable accounts={live.filter((a) => a.subtype === "receivable")} totals={totals} /></Card>
+            <Card title={tr("લીધેલી લોન")}><AccountTable accounts={live.filter((a) => a.type === "liability")} totals={totals} /></Card>
+            <Card title={tr("આપેલ ઉધાર (લેણું)")}><AccountTable accounts={live.filter((a) => a.subtype === "receivable")} totals={totals} /></Card>
           </div>
         </>
       )}
-      <Card title="લોન વ્યવહારો">
+      <Card title={tr("લોન વ્યવહારો")}>
         <TxnList entries={(entries.data ?? []).filter((e) => LOAN_KINDS.has(e.kind))} accounts={accounts} onEdit={open} />
       </Card>
     </div>
