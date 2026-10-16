@@ -79,7 +79,7 @@ function Reports() {
           {(Object.keys(SECTION_LABEL) as Section[]).map((s) => (
             <div key={s} className="flex justify-between border-b py-2 last:border-0">
               <span>{tr(SECTION_LABEL[s])}</span>
-              <span className="text-right text-sm tabular-nums">{tr("આવક")} {formatINR(t.bySection[s].income)} · ખર્ચ {formatINR(t.bySection[s].expense)}<br />
+              <span className="text-right text-sm tabular-nums">{tr("આવક")} {formatINR(t.bySection[s].income)} · {tr("ખર્ચ")} {formatINR(t.bySection[s].expense)}<br />
                 <b className={t.bySection[s].profit >= 0 ? "text-success" : "text-destructive"}>{formatINR(t.bySection[s].profit)}</b></span>
             </div>
           ))}
