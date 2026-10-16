@@ -79,7 +79,7 @@ export const EN: Record<string, string> = {
   "ખાતાવહીમાં ઉલટી એન્ટ્રી ઉમેરાશે. મૂળ રેકોર્ડ ઓડિટ માટે રહેશે.": "An opposite entry will be added to the ledger. The original record stays for audit.",
   "વ્યવહાર રદ થયો": "Transaction reversed", "વ્યવહાર સાચવ્યો": "Transaction saved", "વ્યવહાર સુધાર્યો": "Transaction updated",
   "વ્યવહાર સુધારો": "Edit transaction", " · રદ થયેલ": " · reversed", " · રદ એન્ટ્રી": " · reversal entry", "રદ": "Reversed", "રદ એન્ટ્રી": "Reversal entry", "સક્રિય": "Active",
-  "ભૂલ આવી": "Something went wrong", "આ નામનું ખાતું પહેલેથી છે": "An account with this name already exists",
+  "ભૂલ આવી": "Something went wrong", "નેટવર્ક ભૂલ, ફરી પ્રયાસ કરો": "Network error, please try again", "આ નામનું ખાતું પહેલેથી છે": "An account with this name already exists",
   "છુપાવવું છે?": "hide this account?", "ખાતું છુપાવ્યું": "Account hidden", "ખાતું બન્યું": "Account created", "નામ દાખલ કરો": "Enter a name",
   // form
   "પ્રકાર": "Type", "વિભાગ": "Section", "રકમ (₹)": "Amount (₹)", "રકમ": "Amount", "તારીખ": "Date", "ખાતું": "Account",
