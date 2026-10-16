@@ -144,3 +144,20 @@ export function downloadCSV(name: string, rows: (string | number)[][]) {
   a.click();
   URL.revokeObjectURL(a.href);
 }
+
+/** Mirrors DB account_summary: cancelled originals and their reversal entries are excluded from period AND closing (they net to zero). */
+export interface LedgerEntry { date: string; reversed?: boolean; reversalOf?: boolean; lines: { account_id: string; debit: number; credit: number }[] }
+export function summarizeEntries(entries: LedgerEntry[], from: string, to: string): SummaryRow[] {
+  const m = new Map<string, SummaryRow>();
+  for (const e of entries) {
+    if (e.reversed || e.reversalOf || e.date > to) continue;
+    const inPeriod = e.date >= from;
+    for (const l of e.lines) {
+      const r = m.get(l.account_id) ?? { account_id: l.account_id, period_debit: 0, period_credit: 0, closing_debit: 0, closing_credit: 0 };
+      r.closing_debit += l.debit; r.closing_credit += l.credit;
+      if (inPeriod) { r.period_debit += l.debit; r.period_credit += l.credit; }
+      m.set(l.account_id, r);
+    }
+  }
+  return [...m.values()];
+}

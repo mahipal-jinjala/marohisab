@@ -73,16 +73,16 @@ export function useRecord() {
   const inv = useInvalidate();
   return useMutation({
     mutationFn: async ({ input, replaces }: { input: TxnInput; replaces?: string | undefined }) => {
-      const { data, error } = await supabase.rpc("record_transaction", {
+      const args = {
         p_kind: input.kind, p_date: input.date, p_amount: input.amount, p_debit: input.debit, p_credit: input.credit,
         ...(input.description ? { p_description: input.description } : {}), ...(input.party ? { p_party: input.party } : {}), p_section: input.section,
         p_idempotency_key: input.key, p_extra_amount: input.extra ?? 0, ...(input.extraAccount ? { p_extra_account: input.extraAccount } : {}),
-      });
+      };
+      // Edit = reverse original + repost, atomically in one DB transaction (no double-counting on partial failure).
+      const { data, error } = replaces
+        ? await supabase.rpc("edit_transaction", { p_entry: replaces, ...args })
+        : await supabase.rpc("record_transaction", args);
       if (error) throw error;
-      if (replaces) {
-        const r = await supabase.rpc("reverse_transaction", { p_entry: replaces, p_reason: "edit" });
-        if (r.error) throw r.error;
-      }
       return data;
     },
     onSuccess: inv,

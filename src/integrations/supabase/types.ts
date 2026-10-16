@@ -200,6 +200,23 @@ export type Database = {
           period_debit: number
         }[]
       }
+      edit_transaction: {
+        Args: {
+          p_amount: number
+          p_credit: string
+          p_date: string
+          p_debit: string
+          p_description?: string
+          p_entry: string
+          p_extra_account?: string
+          p_extra_amount?: number
+          p_idempotency_key?: string
+          p_kind: string
+          p_party?: string
+          p_section?: Database["public"]["Enums"]["book_section"]
+        }
+        Returns: string
+      }
       ensure_default_accounts: { Args: never; Returns: undefined }
       kind_rule: { Args: { p_kind: string }; Returns: Record<string, unknown> }
       record_transaction: {
