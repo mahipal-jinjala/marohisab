@@ -1,4 +1,5 @@
-import { tr } from "@/lib/i18n";
+import { tr, useLang } from "@/lib/i18n";
+import { LangSwitch } from "@/components/LangSwitch";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -120,6 +121,8 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
+  const lang = useLang();
+  useEffect(() => { router.invalidate(); }, [lang, router]); // refresh page titles
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
@@ -132,7 +135,8 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div key={lang} className="contents"><Outlet /></div>
+      <LangSwitch />
       <Toaster richColors position="top-center" />
     </QueryClientProvider>
   );

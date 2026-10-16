@@ -1,4 +1,4 @@
-import { tr } from "@/lib/i18n";
+import { dateLocale, tr } from "@/lib/i18n";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Pencil, Undo2 } from "lucide-react";
@@ -31,7 +31,7 @@ export function TxnList({ entries, accounts, onEdit, empty = tr("હજી ક�
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold">{tr(e.description) || tr(KINDS[e.kind]?.label) || e.kind}{e.party ? ` · ${e.party}` : ""}</p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {new Date(e.entry_date).toLocaleDateString("gu-IN")} · {tr(KINDS[e.kind]?.label)} · {tr(SECTION_LABEL[e.section])} · {name(dr)} ← {name(cr)}
+                  {new Date(e.entry_date).toLocaleDateString(dateLocale())} · {tr(KINDS[e.kind]?.label)} · {tr(SECTION_LABEL[e.section])} · {name(dr)} ← {name(cr)}
                   {e.reversed_by ? tr(" · રદ થયેલ") : ""}{e.reversal_of ? tr(" · રદ એન્ટ્રી") : ""}
                 </p>
               </div>

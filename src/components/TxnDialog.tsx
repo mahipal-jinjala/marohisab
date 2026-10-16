@@ -122,8 +122,8 @@ export function TxnDialog({ preset, onClose }: { preset: TxnPreset | null; onClo
             </div>
           )}
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5tr("><Label>{tr("વ્યક્તિ / પક્ષ")}</Label><Input className=")h-12" maxLength={80} value={party} onChange={(e) => setParty(e.target.value)} /></div>
-            <div className="space-y-1.5tr("><Label>{tr("નોંધ")}</Label><Input className=")h-12" maxLength={200} value={desc} onChange={(e) => setDesc(e.target.value)} /></div>
+            <div className="space-y-1.5"><Label>{tr("વ્યક્તિ / પક્ષ")}</Label><Input className="h-12" maxLength={80} value={party} onChange={(e) => setParty(e.target.value)} /></div>
+            <div className="space-y-1.5"><Label>{tr("નોંધ")}</Label><Input className="h-12" maxLength={200} value={desc} onChange={(e) => setDesc(e.target.value)} /></div>
           </div>
           {err && <p className="rounded-lg bg-destructive/10 p-2 text-sm text-destructive">{err}</p>}
           <Button type="submit" size="lg" className="h-13 w-full text-lg" disabled={record.isPending}>
