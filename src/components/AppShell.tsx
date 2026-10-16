@@ -55,11 +55,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-background/90 px-4 py-3 backdrop-blur md:hidden">
+          <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-background/90 py-3 pl-4 pr-28 backdrop-blur md:hidden">
             <span className="font-display text-xl font-bold text-primary">{tr("મારો હિસાબ")}</span>
             <Button variant="ghost" size="icon" aria-label={tr("બહાર નીકળો")} onClick={logout}><LogOut className="size-5" /></Button>
           </header>
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-4 md:px-8 md:pb-10 md:pt-8">{children}</main>
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-4 md:px-8 md:pb-10 md:pt-16">{children}</main>
         </div>
 
         <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t bg-card pb-[env(safe-area-inset-bottom)] md:hidden">
