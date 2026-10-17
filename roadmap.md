@@ -1,0 +1,3 @@
+- [x] Check all English content pages with saved data on desktop and phone-sized screens.
+- [ ] Correct translation and layout issues found during the checks.
+- [ ] Verify language persistence, Gujarati restoration, forms, errors, and phone layouts after corrections.

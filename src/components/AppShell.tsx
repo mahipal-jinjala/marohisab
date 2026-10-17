@@ -140,7 +140,7 @@ export function DateRange({ from, to, onChange }: { from: string; to: string; on
 
 export const Card = ({ title, children, action }: { title?: string; children: ReactNode; action?: ReactNode }) => (
   <section className="rounded-2xl border bg-card p-4 shadow-card md:p-5">
-    {(title || action) && <div className="mb-3 flex items-center justify-between gap-2"><h2 className="text-lg font-bold">{title}</h2>{action}</div>}
+    {(title || action) && <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h2 className="text-lg font-bold">{title}</h2>{action}</div>}
     {children}
   </section>
 );

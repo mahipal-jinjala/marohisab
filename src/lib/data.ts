@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { tr } from "./i18n";
+import { translatedError } from "./i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { computeTotals, type Account, type Kind, type Section, type SummaryRow } from "./accounting";
 
@@ -128,8 +128,5 @@ export function useUpdateAccount() {
 }
 
 export function errMsg(e: unknown) {
-  const m = (e as { message?: string })?.message ?? "ભૂલ આવી";
-  if (m.includes("duplicate key") || m.includes("unique")) return tr("આ નામનું ખાતું પહેલેથી છે");
-  if (m.includes("Failed to fetch") || m.includes("NetworkError")) return tr("નેટવર્ક ભૂલ, ફરી પ્રયાસ કરો");
-  return tr(m);
+  return translatedError(e);
 }

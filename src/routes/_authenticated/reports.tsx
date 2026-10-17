@@ -8,7 +8,7 @@ import { SECTION_LABEL, SUBTYPE_LABEL, downloadCSV, formatINR, type Section } fr
 import { monthStartISO, todayISO, useEntries, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/reports")({
-  head: () => ({ meta: [{ title: tr("રિપોર્ટ — મારો હિસાબ") }, { name: "description", content: tr("દૈનિક, માસિક, વાર્ષિક રિપોર્ટ, બેલેન્સ શીટ અને નેટ વર્થ.") }] }),
+  head: () => ({ meta: [{ title: tr("રિપોર્ટ — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("દૈનિક, માસિક, વાર્ષિક રિપોર્ટ, બેલેન્સ શીટ અને નેટ વર્થ.") }, { property: "og:title", content: tr("રિપોર્ટ — મારો હિસાબ") }, { property: "og:description", content: tr("દૈનિક, માસિક, વાર્ષિક રિપોર્ટ, બેલેન્સ શીટ અને નેટ વર્થ.") }] }),
   component: Reports,
 });
 
@@ -57,7 +57,7 @@ function Reports() {
   ]);
 
   const row = (l: string, v: number, strong = false) => (
-    <div className={`flex justify-between py-1.5 ${strong ? "border-t font-bold" : ""}`}><span>{l}</span><span className="tabular-nums">{formatINR(v)}</span></div>
+    <div className={`flex justify-between gap-2 py-1.5 ${strong ? "border-t font-bold" : ""}`}><span>{l}</span><span className="tabular-nums">{formatINR(v)}</span></div>
   );
 
   return (
@@ -77,9 +77,9 @@ function Reports() {
         </Card>
         <Card title={tr("વિભાગ મુજબ નફો / ખર્ચ")}>
           {(Object.keys(SECTION_LABEL) as Section[]).map((s) => (
-            <div key={s} className="flex justify-between border-b py-2 last:border-0">
+            <div key={s} className="flex flex-col gap-2 border-b py-2 last:border-0 sm:flex-row sm:justify-between">
               <span>{tr(SECTION_LABEL[s])}</span>
-              <span className="text-right text-sm tabular-nums">{tr("આવક")} {formatINR(t.bySection[s].income)} · {tr("ખર્ચ")} {formatINR(t.bySection[s].expense)}<br />
+              <span className="text-sm tabular-nums sm:text-right">{tr("આવક")} {formatINR(t.bySection[s].income)} · {tr("ખર્ચ")} {formatINR(t.bySection[s].expense)}<br />
                 <b className={t.bySection[s].profit >= 0 ? "text-success" : "text-destructive"}>{formatINR(t.bySection[s].profit)}</b></span>
             </div>
           ))}
@@ -90,7 +90,7 @@ function Reports() {
           <Button key={g} size="sm" variant={group === g ? "default" : "outline"} onClick={() => setGroup(g)}>{g === "day" ? tr("દૈનિક") : g === "month" ? tr("માસિક") : tr("વાર્ષિક")}</Button>))}</div>}>
         {entries.isLoading ? <Loading /> : periods.length === 0 ? <p className="py-6 text-center text-muted-foreground">{tr("આ સમયગાળામાં ડેટા નથી")}</p> : (
           <div className="overflow-x-auto"><table className="w-full text-sm">
-            <thead><tr className="text-left text-muted-foreground"><th className="py-2tr(">{tr("સમયગાળો")}</th><th className=")text-righttr(">{tr("આવક")}</th><th className=")text-righttr(">{tr("ખર્ચ")}</th><th className=")text-right">{tr("ચોખ્ખું")}</th></tr></thead>
+            <thead><tr className="text-left text-muted-foreground"><th className="py-2">{tr("સમયગાળો")}</th><th className="text-right">{tr("આવક")}</th><th className="text-right">{tr("ખર્ચ")}</th><th className="text-right">{tr("ચોખ્ખું")}</th></tr></thead>
             <tbody>{periods.map(([k, v]) => (
               <tr key={k} className="border-t"><td className="py-2">{k}</td><td className="text-right text-success">{formatINR(v.inc)}</td><td className="text-right">{formatINR(v.exp)}</td>
                 <td className={`text-right font-semibold ${v.inc - v.exp >= 0 ? "text-success" : "text-destructive"}`}>{formatINR(v.inc - v.exp)}</td></tr>))}</tbody>
@@ -99,7 +99,7 @@ function Reports() {
       </Card>
       <Card title={tr("ખાતા મુજબ (જનરલ લેજર સારાંશ)")}>
         <div className="overflow-x-auto"><table className="w-full text-sm">
-          <thead><tr className="text-left text-muted-foreground"><th className="py-2tr(">{tr("ખાતું")}</th><th>{tr("પ્રકાર")}</th><th className=")text-righttr(">{tr("સમયગાળો")}</th><th className=")text-right">{tr("બેલેન્સ")}</th></tr></thead>
+          <thead><tr className="text-left text-muted-foreground"><th className="py-2">{tr("ખાતું")}</th><th>{tr("પ્રકાર")}</th><th className="text-right">{tr("સમયગાળો")}</th><th className="text-right">{tr("બેલેન્સ")}</th></tr></thead>
           <tbody>{live.map((a) => (
             <tr key={a.id} className="border-t"><td className="py-2">{tr(a.name)}</td><td className="text-muted-foreground">{tr(SUBTYPE_LABEL[a.subtype])} · {tr(SECTION_LABEL[a.section])}</td>
               <td className="text-right tabular-nums">{formatINR(bal(a.id).period)}</td><td className="text-right font-semibold tabular-nums">{formatINR(bal(a.id).closing)}</td></tr>))}</tbody>

@@ -1,4 +1,4 @@
-import { tr } from "@/lib/i18n";
+import { tr, translatedError } from "@/lib/i18n";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: tr("પ્રવેશ — મારો હિસાબ") },
+      { title: tr("પ્રવેશ — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
       { name: "description", content: tr("મારો હિસાબમાં લૉગિન કરો અથવા નવું ખાતું બનાવો.") },
       { property: "og:title", content: tr("પ્રવેશ — મારો હિસાબ") },
       { property: "og:description", content: tr("ગુજરાતી હિસાબ એપમાં લૉગિન કરો.") },
@@ -47,8 +47,7 @@ function AuthPage() {
         setMsg({ ok: true, t: tr("પાસવર્ડ રીસેટ લિંક ઇમેઇલ પર મોકલી છે.") });
       }
     } catch (err) {
-      const m = (err as Error).message;
-      setMsg({ ok: false, t: m.includes("Invalid login") ? tr("ઇમેઇલ અથવા પાસવર્ડ ખોટો છે") : m });
+      setMsg({ ok: false, t: translatedError(err) });
     } finally { setBusy(false); }
   };
 
@@ -69,7 +68,7 @@ function AuthPage() {
             {busy ? tr("રાહ જુઓ…") : mode === "in" ? tr("પ્રવેશ") : mode === "up" ? tr("ખાતું બનાવો") : tr("લિંક મોકલો")}
           </Button>
         </form>
-        <div className="mt-4 flex justify-between text-sm">
+        <div className="mt-4 flex flex-wrap justify-between gap-3 text-sm">
           <button className="text-primary underline" onClick={() => { setMode(mode === "in" ? "up" : "in"); setMsg(null); }}>
             {mode === "in" ? tr("નવું ખાતું બનાવો") : tr("પ્રવેશ પર પાછા")}
           </button>

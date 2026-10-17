@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SectionPage } from "@/components/SectionPage";
 
 export const Route = createFileRoute("/_authenticated/ghar")({
-  head: () => ({ meta: [{ title: tr("ઘર વેરેન્ટેજ — મારો હિસાબ") }, { name: "description", content: tr("ઘર સંબંધિત ખર્ચ, વેરો અને સમારકામનો અલગ હિસાબ.") }] }),
+  head: () => ({ meta: [{ title: tr("ઘર વેરેન્ટેજ — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("ઘર સંબંધિત ખર્ચ, વેરો અને સમારકામનો અલગ હિસાબ.") }, { property: "og:title", content: tr("ઘર વેરેન્ટેજ — મારો હિસાબ") }, { property: "og:description", content: tr("ઘર સંબંધિત ખર્ચ, વેરો અને સમારકામનો અલગ હિસાબ.") }] }),
   component: () => (
     <SectionPage section="ghar" title={tr("ઘર વેરેન્ટેજ")}
       intro={tr("તમારી જરૂરિયાત પ્રમાણે કેટેગરી ઉમેરો — સમારકામ, વેરો, બાંધકામ વગેરે.")}

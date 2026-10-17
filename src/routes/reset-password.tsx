@@ -1,4 +1,4 @@
-import { tr } from "@/lib/i18n";
+import { tr, translatedError } from "@/lib/i18n";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/reset-password")({
-  head: () => ({ meta: [{ title: tr("નવો પાસવર્ડ — મારો હિસાબ") }, { name: "description", content: tr("નવો પાસવર્ડ સેટ કરો.") }] }),
+  head: () => ({ meta: [{ title: tr("નવો પાસવર્ડ — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("નવો પાસવર્ડ સેટ કરો.") }, { property: "og:title", content: tr("નવો પાસવર્ડ — મારો હિસાબ") }, { property: "og:description", content: tr("નવો પાસવર્ડ સેટ કરો.") }] }),
   component: Reset,
 });
 
@@ -18,7 +18,7 @@ function Reset() {
     e.preventDefault();
     if (pw.length < 6) return setErr(tr("ઓછામાં ઓછા 6 અક્ષર"));
     const { error } = await supabase.auth.updateUser({ password: pw });
-    if (error) return setErr(error.message);
+    if (error) return setErr(translatedError(error));
     navigate({ to: "/dashboard" });
   };
   return (

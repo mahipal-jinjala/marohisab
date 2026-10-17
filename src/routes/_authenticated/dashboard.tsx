@@ -1,4 +1,4 @@
-import { tr } from "@/lib/i18n";
+import { tr, translatedError } from "@/lib/i18n";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { formatINR, type Kind } from "@/lib/accounting";
 import { monthStartISO, todayISO, useEntries, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: tr("ડેશબોર્ડ — મારો હિસાબ") }, { name: "description", content: tr("તમારો નાણાકીય સારાંશ.") }] }),
+  head: () => ({ meta: [{ title: tr("ડેશબોર્ડ — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("તમારો નાણાકીય સારાંશ.") }, { property: "og:title", content: tr("ડેશબોર્ડ — મારો હિસાબ") }, { property: "og:description", content: tr("તમારો નાણાકીય સારાંશ.") }] }),
   component: Dashboard,
 });
 
@@ -23,7 +23,7 @@ function Dashboard() {
   const open = useOpenTxn();
   const { totals: t, accounts, isLoading, error } = useTotals(from, to);
   const recent = useEntries({ limit: 8 });
-  if (error) return <p className="text-destructive">{tr("ડેટા લોડ ન થયો:")} {(error as Error).message}</p>;
+  if (error) return <p className="text-destructive">{tr("ડેટા લોડ ન થયો:")} {translatedError(error)}</p>;
   return (
     <div className="space-y-6">
       <PageHeader title={tr("ડેશબોર્ડ")}><DateRange from={from} to={to} onChange={(f, x) => { setFrom(f); setTo(x); }} /></PageHeader>
@@ -50,7 +50,7 @@ function Dashboard() {
       )}
       <Card title={tr("ઝડપી ઉમેરો")}>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-          {QUICK.map((q) => <Button key={q.k} size="lg" variant={q.k === "income" ? "default" : "outline"} className="h-14 text-base" onClick={() => open({ kind: q.k })}>{tr(q.l)}</Button>)}
+          {QUICK.map((q) => <Button key={q.k} size="lg" variant={q.k === "income" ? "default" : "outline"} className="min-h-14 h-auto whitespace-normal py-3 text-base" onClick={() => open({ kind: q.k })}>{tr(q.l)}</Button>)}
         </div>
       </Card>
       <Card title={tr("તાજેતરના વ્યવહારો")}>
