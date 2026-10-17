@@ -7,7 +7,7 @@ import type { AccType, Subtype } from "@/lib/accounting";
 import { monthStartISO, todayISO, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/accounts")({
-  head: () => ({ meta: [{ title: tr("ખાતાં — મારો હિસાબ") }, { name: "description", content: tr("ખાતાવહી અને ખાતાંઓની યાદી.") }] }),
+  head: () => ({ meta: [{ title: tr("ખાતાં — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("ખાતાવહી અને ખાતાંઓની યાદી.") }, { property: "og:title", content: tr("ખાતાં — મારો હિસાબ") }, { property: "og:description", content: tr("ખાતાવહી અને ખાતાંઓની યાદી.") }] }),
   component: Accounts,
 });
 

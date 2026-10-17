@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SectionPage } from "@/components/SectionPage";
 
 export const Route = createFileRoute("/_authenticated/dairy")({
-  head: () => ({ meta: [{ title: tr("ભેંસ ડેરી — મારો હિસાબ") }, { name: "description", content: tr("ભેંસ ખરીદી, ઘાસચારો, દવા, દૂધ વેચાણ અને નફો-નુકસાન.") }] }),
+  head: () => ({ meta: [{ title: tr("ભેંસ ડેરી — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("ભેંસ ખરીદી, ઘાસચારો, દવા, દૂધ વેચાણ અને નફો-નુકસાન.") }, { property: "og:title", content: tr("ભેંસ ડેરી — મારો હિસાબ") }, { property: "og:description", content: tr("ભેંસ ખરીદી, ઘાસચારો, દવા, દૂધ વેચાણ અને નફો-નુકસાન.") }] }),
   component: () => (
     <SectionPage section="dairy" title={tr("ભેંસ ડેરી વ્યવસાય")} showProfit
       intro={tr("ભેંસ, તબેલો અને સાધનો ખરીદી મિલકત તરીકે નોંધાય છે, ખર્ચ તરીકે નહીં.")}

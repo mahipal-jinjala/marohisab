@@ -10,7 +10,7 @@ import { KINDS, SECTION_LABEL, downloadCSV, type Kind, type Section } from "@/li
 import { monthStartISO, todayISO, useAccounts, useEntries } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/transactions")({
-  head: () => ({ meta: [{ title: tr("વ્યવહારો — મારો હિસાબ") }, { name: "description", content: tr("બધા વ્યવહારો શોધો અને ફિલ્ટર કરો.") }] }),
+  head: () => ({ meta: [{ title: tr("વ્યવહારો — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("બધા વ્યવહારો શોધો અને ફિલ્ટર કરો.") }, { property: "og:title", content: tr("વ્યવહારો — મારો હિસાબ") }, { property: "og:description", content: tr("બધા વ્યવહારો શોધો અને ફિલ્ટર કરો.") }] }),
   component: Txns,
 });
 

@@ -8,7 +8,7 @@ import { formatINR } from "@/lib/accounting";
 import { todayISO, useEntries, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/investments")({
-  head: () => ({ meta: [{ title: tr("રોકાણ અને મિલકત — મારો હિસાબ") }, { name: "description", content: tr("FD, RD, શેર, મ્યુચ્યુઅલ ફંડ, સોનું અને વ્યવસાયિક રોકાણ.") }] }),
+  head: () => ({ meta: [{ title: tr("રોકાણ અને મિલકત — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("FD, RD, શેર, મ્યુચ્યુઅલ ફંડ, સોનું અને વ્યવસાયિક રોકાણ.") }, { property: "og:title", content: tr("રોકાણ અને મિલકત — મારો હિસાબ") }, { property: "og:description", content: tr("FD, RD, શેર, મ્યુચ્યુઅલ ફંડ, સોનું અને વ્યવસાયિક રોકાણ.") }] }),
   component: Inv,
 });
 const KINDS = new Set(["invest", "invest_redeem", "asset_buy", "asset_sell"]);

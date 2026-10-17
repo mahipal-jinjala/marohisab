@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: tr("મારો હિસાબ — ગુજરાતી હિસાબ એપ") },
+      { title: tr("મારો હિસાબ — ગુજરાતી હિસાબ એપ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
       { name: "description", content: tr("વ્યક્તિગત, ઘરખર્ચ, લોન, રોકાણ અને ભેંસ ડેરીનો સંપૂર્ણ હિસાબ — ગુજરાતીમાં.") },
       { property: "og:title", content: tr("મારો હિસાબ — ગુજરાતી હિસાબ એપ") },
       { property: "og:description", content: tr("ડબલ-એન્ટ્રી હિસાબ, રિપોર્ટ અને નેટ વર્થ — ગુજરાતીમાં.") },

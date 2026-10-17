@@ -8,7 +8,7 @@ import { formatINR } from "@/lib/accounting";
 import { todayISO, useEntries, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/loans")({
-  head: () => ({ meta: [{ title: tr("લોન અને ઉધાર — મારો હિસાબ") }, { name: "description", content: tr("લીધેલી લોન, આપેલ ઉધાર, ચૂકવણી અને વ્યાજ.") }] }),
+  head: () => ({ meta: [{ title: tr("લોન અને ઉધાર — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("લીધેલી લોન, આપેલ ઉધાર, ચૂકવણી અને વ્યાજ.") }, { property: "og:title", content: tr("લોન અને ઉધાર — મારો હિસાબ") }, { property: "og:description", content: tr("લીધેલી લોન, આપેલ ઉધાર, ચૂકવણી અને વ્યાજ.") }] }),
   component: Loans,
 });
 
@@ -33,10 +33,10 @@ function Loans() {
             <Stat tone="good" label={tr("લેવાના બાકી (ઉધાર આપેલ)")} value={formatINR(totals.receivables)} />
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            <Button size="lg" className="h-14" onClick={() => open({ kind: "loan_taken" })}>{tr("લોન લીધી")}</Button>
-            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "loan_repay" })}>{tr("લોન ચૂકવી + વ્યાજ")}</Button>
-            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "lend" })}>{tr("ઉધાર આપ્યા")}</Button>
-            <Button size="lg" variant="outline" className="h-14" onClick={() => open({ kind: "lend_collect" })}>{tr("ઉધાર પાછા મળ્યા")}</Button>
+            <Button size="lg" className="min-h-14 h-auto whitespace-normal py-3" onClick={() => open({ kind: "loan_taken" })}>{tr("લોન લીધી")}</Button>
+            <Button size="lg" variant="outline" className="min-h-14 h-auto whitespace-normal py-3" onClick={() => open({ kind: "loan_repay" })}>{tr("લોન ચૂકવી + વ્યાજ")}</Button>
+            <Button size="lg" variant="outline" className="min-h-14 h-auto whitespace-normal py-3" onClick={() => open({ kind: "lend" })}>{tr("ઉધાર આપ્યા")}</Button>
+            <Button size="lg" variant="outline" className="min-h-14 h-auto whitespace-normal py-3" onClick={() => open({ kind: "lend_collect" })}>{tr("ઉધાર પાછા મળ્યા")}</Button>
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
             <Card title={tr("લીધેલી લોન")}><AccountTable accounts={live.filter((a) => a.type === "liability")} totals={totals} /></Card>
