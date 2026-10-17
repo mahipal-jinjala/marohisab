@@ -41,7 +41,7 @@ export function NewAccountButton({ subtypes, section = "personal", label = tr("�
   { subtypes: Subtype[]; section?: Section; label?: string; withParty?: boolean }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [subtype, setSubtype] = useState<Subtype>(subtypes[0]!);
+  const [subtype, setSubtype] = useState<Subtype>(subtypes[0] ?? "cash");
   const [sec, setSec] = useState<Section>(section);
   const [party, setParty] = useState("");
   const [rate, setRate] = useState("");
@@ -59,10 +59,10 @@ export function NewAccountButton({ subtypes, section = "personal", label = tr("�
     <>
       <Button variant="outline" onClick={() => setOpen(true)}><Plus className="size-4" />{label}</Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[90dvh] overflow-y-auto">
           <DialogHeader><DialogTitle>{label}</DialogTitle></DialogHeader>
           <form onSubmit={save} className="space-y-3">
-            <div className="space-y-1.5tr("><Label>{tr("નામ")}</Label><Input className=")h-12" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} autoFocus /></div>
+            <div className="space-y-1.5"><Label>{tr("નામ")}</Label><Input className="h-12" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} autoFocus /></div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5"><Label>{tr("પ્રકાર")}</Label>
                 <select className={sel} value={subtype} onChange={(e) => setSubtype(e.target.value as Subtype)}>
@@ -73,8 +73,8 @@ export function NewAccountButton({ subtypes, section = "personal", label = tr("�
             </div>
             {withParty && (
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5tr("><Label>{tr("વ્યક્તિ / બેંક")}</Label><Input className=")h-12" value={party} onChange={(e) => setParty(e.target.value)} /></div>
-                <div className="space-y-1.5tr("><Label>{tr("વ્યાજ દર (%)")}</Label><Input className=")h-12" type="number" step="0.01" min="0" value={rate} onChange={(e) => setRate(e.target.value)} /></div>
+                <div className="space-y-1.5"><Label>{tr("વ્યક્તિ / બેંક")}</Label><Input className="h-12" value={party} onChange={(e) => setParty(e.target.value)} /></div>
+                <div className="space-y-1.5"><Label>{tr("વ્યાજ દર (%)")}</Label><Input className="h-12" type="number" step="0.01" min="0" value={rate} onChange={(e) => setRate(e.target.value)} /></div>
               </div>
             )}
             <Button type="submit" size="lg" className="h-12 w-full" disabled={create.isPending}>{tr("સાચવો")}</Button>

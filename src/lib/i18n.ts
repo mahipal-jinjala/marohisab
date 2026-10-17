@@ -24,6 +24,20 @@ export function useLang() {
 }
 export const dateLocale = () => (lang === "en" ? "en-IN" : "gu-IN");
 
+/** Translate application errors without exposing raw service messages. */
+export function translatedError(error: unknown): string {
+  const message = typeof error === "string" ? error :
+    error && typeof error === "object" && "message" in error ? String(error.message) : "";
+  if (EN[message] !== undefined) return tr(message);
+  if (/duplicate key|unique/i.test(message)) return tr("આ નામનું ખાતું પહેલેથી છે");
+  if (/Failed to fetch|NetworkError|network|fetch failed/i.test(message)) return tr("નેટવર્ક ભૂલ, ફરી પ્રયાસ કરો");
+  if (/Invalid login/i.test(message)) return tr("ઇમેઇલ અથવા પાસવર્ડ ખોટો છે");
+  if (/Email not confirmed/i.test(message)) return tr("પ્રવેશ પહેલાં તમારું ઇમેઇલ પુષ્ટિ કરો.");
+  if (/rate limit|too many requests|security purposes/i.test(message)) return tr("ઘણા પ્રયાસ થયા છે. થોડી વાર પછી ફરી પ્રયાસ કરો.");
+  if (/session missing|jwt expired|not authenticated/i.test(message)) return tr("ફરી પ્રવેશ કરો અને પ્રયાસ કરો.");
+  return tr("ભૂલ આવી");
+}
+
 export function tr(s: string | null | undefined): string {
   if (s == null) return "";
   if (lang === "gu") return s;
@@ -139,4 +153,14 @@ export const EN: Record<string, string> = {
   "ભેંસો": "Buffaloes", "તબેલો (શેડ)": "Shed", "સાધનો": "Equipment", "શેર": "Shares", "મ્યુચ્યુઅલ ફંડ": "Mutual funds", "સોનું": "Gold",
   // language switch
   "ભાષા": "Language",
+  "બંધ કરો": "Close",
+  "પાનું મળ્યું નહીં": "Page not found",
+  "આ પાનું ઉપલબ્ધ નથી અથવા તેનું સરનામું બદલાયું છે.": "This page is unavailable or its address has changed.",
+  "મુખ્ય પાને જાઓ": "Go home",
+  "આ પાનું લોડ થયું નહીં": "This page didn't load",
+  "ફરી પ્રયાસ કરો અથવા મુખ્ય પાને પાછા જાઓ.": "Try again or return to the home page.",
+  "ફરી પ્રયાસ કરો": "Try again",
+  "પ્રવેશ પહેલાં તમારું ઇમેઇલ પુષ્ટિ કરો.": "Confirm your email before signing in.",
+  "ઘણા પ્રયાસ થયા છે. થોડી વાર પછી ફરી પ્રયાસ કરો.": "Too many attempts. Please try again shortly.",
+  "ફરી પ્રવેશ કરો અને પ્રયાસ કરો.": "Sign in again and retry.",
 };
