@@ -5,7 +5,7 @@ const acc = (id: string, subtype: Account["subtype"], type: Account["type"], sec
   ({ id, name: id, subtype, type, section, party: null, interest_rate: null, is_archived: false });
 
 const accounts = [
-  acc("cash", "cash", "asset"), acc("bank", "bank", "asset"), acc("loan", "loan_payable", "liability"),
+  acc("cash", "cash", "asset"), acc("bank", "bank", "asset"), acc("upi", "upi", "asset"), acc("loan", "loan_payable", "liability"),
   acc("recv", "receivable", "asset"), acc("inv", "investment", "asset"), acc("sal", "income", "income"),
   acc("food", "expense", "expense", "household"), acc("int", "expense", "expense"),
   acc("milk", "income", "income", "dairy"), acc("feed", "expense", "expense", "dairy"), acc("cap", "equity", "equity"),
