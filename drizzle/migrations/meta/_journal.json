@@ -15,6 +15,13 @@
       "when": 1792119555888,
       "tag": "0001_atomic_edit_and_consistent_closing",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792293813666,
+      "tag": "0002_unique_idempotency_key",
+      "breakpoints": true
     }
   ]
 }

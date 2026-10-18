@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX journal_entries_user_idempotency_uniq ON public.journal_entries (user_id, idempotency_key) WHERE idempotency_key IS NOT NULL;
