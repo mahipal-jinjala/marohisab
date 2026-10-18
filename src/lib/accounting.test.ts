@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildLines, isBalanced, computeTotals, formatINR, type Account, type SummaryRow } from "./accounting";
+import { buildLines, isBalanced, computeTotals, formatINR, summarizeEntries, type Account, type SummaryRow } from "./accounting";
 
 const acc = (id: string, subtype: Account["subtype"], type: Account["type"], section: Account["section"] = "personal"): Account =>
   ({ id, name: id, subtype, type, section, party: null, interest_rate: null, is_archived: false });
