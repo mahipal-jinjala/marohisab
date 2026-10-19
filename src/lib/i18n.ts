@@ -98,7 +98,7 @@ export const EN: Record<string, string> = {
   // form
   "પ્રકાર": "Type", "વિભાગ": "Section", "રકમ (₹)": "Amount (₹)", "રકમ": "Amount", "તારીખ": "Date", "ખાતું": "Account",
   "વ્યક્તિ / પક્ષ": "Person / party", "પક્ષ": "Party", "નોંધ": "Note", "નામ": "Name", "વ્યક્તિ / બેંક": "Person / bank", "વ્યાજ દર (%)": "Interest rate (%)", "વ્યાજ": "interest",
-  "— પહેલા ખાતું બનાવો —": "— Create an account first —", "માન્ય રકમ દાખલ કરો": "Enter a valid amount", "વ્યાજ ઋણ ન હોઈ શકે": "Interest cannot be negative",
+  "— પહેલા ખાતું બનાવો —": "— Create an account first —", "માન્ય રકમ દાખલ કરો": "Enter a valid amount", "કુલ ચુકવણી": "Total payment", "વ્યાજ ઋણ ન હોઈ શકે": "Interest cannot be negative",
   "બંને ખાતા પસંદ કરો": "Select both accounts", "બંને ખાતા અલગ હોવા જોઈએ": "The two accounts must be different", "વ્યાજ ખાતું પસંદ કરો": "Select an interest account",
   "રકમ શૂન્યથી વધુ હોવી જોઈએ": "Amount must be greater than zero", "અમાન્ય તારીખ": "Invalid date", "અમાન્ય વ્યવહાર પ્રકાર": "Invalid transaction type",
   "ખાતું મળ્યું નહીં": "Account not found", "આ વ્યવહાર માટે ખાતાનો પ્રકાર યોગ્ય નથી": "Account type is not valid for this transaction",
