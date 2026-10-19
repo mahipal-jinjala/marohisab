@@ -57,12 +57,14 @@ export interface Line { side: "debit" | "credit"; subtype: Subtype; amount: numb
 /** Build journal lines for a transaction; throws if the accounts don't fit the kind. */
 export function buildLines(kind: Kind, amount: number, dr: Subtype, cr: Subtype, extra = 0, extraSub?: Subtype): Line[] {
   const def = KINDS[kind];
-  if (!(amount > 0)) throw new Error("રકમ શૂન્યથી વધુ હોવી જોઈએ");
+  if (extra < 0) throw new Error("વ્યાજ ઋણ ન હોઈ શકે");
+  // Principal may be 0 only for interest-only payments (kinds with an interest part).
+  if (!(amount > 0) && !(amount === 0 && def.extra && extra > 0)) throw new Error("રકમ શૂન્યથી વધુ હોવી જોઈએ");
   if (!def.dr.includes(dr) || !def.cr.includes(cr)) throw new Error("આ વ્યવહાર માટે ખાતાનો પ્રકાર યોગ્ય નથી");
-  const lines: Line[] = [
+  const lines: Line[] = amount > 0 ? [
     { side: "debit", subtype: dr, amount },
     { side: "credit", subtype: cr, amount },
-  ];
+  ] : [];
   if (extra > 0) {
     if (!def.extra || extraSub !== def.extra.subtype) throw new Error("વ્યાજ આ વ્યવહારમાં માન્ય નથી");
     if (kind === "loan_repay") lines.push({ side: "debit", subtype: extraSub, amount: extra }, { side: "credit", subtype: cr, amount: extra });
