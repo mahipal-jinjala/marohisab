@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { computeTotals, summarizeEntries, type Account, type LedgerEntry } from "./accounting";
+import { buildLines, computeTotals, summarizeEntries, type Account, type LedgerEntry } from "./accounting";
 
 const acc = (id: string, subtype: Account["subtype"], type: Account["type"]): Account =>
   ({ id, name: id, subtype, type, section: "personal", party: null, interest_rate: null, is_archived: false });
@@ -38,5 +38,35 @@ describe("income create / edit / cancel / reverse", () => {
   it("cash/UPI balance equals net of active income minus expense", () => {
     const t = totals([salary, grocery, post("upi", "other", 1500)]);
     expect(t.upi).toBe(t.earnings);
+  });
+});
+
+describe("loan repayment: principal / interest split", () => {
+  const acc2 = (id: string, subtype: Account["subtype"], type: Account["type"]): Account =>
+    ({ id, name: id, subtype, type, section: "personal", party: null, interest_rate: null, is_archived: false });
+  const accs = [acc2("upi", "upi", "asset"), acc2("loan", "loan_payable", "liability"), acc2("int", "expense", "expense")];
+  const taken: LedgerEntry = { date: D, lines: [{ account_id: "upi", debit: 10000, credit: 0 }, { account_id: "loan", debit: 0, credit: 10000 }] };
+  const repay = (p: number, i: number): LedgerEntry => {
+    const ls = buildLines("loan_repay", p, "loan_payable", "upi", i, "expense");
+    const id = (s: string) => (s === "upi" ? "upi" : s === "expense" ? "int" : "loan");
+    return { date: D, lines: ls.map((l) => ({ account_id: id(l.subtype), debit: l.side === "debit" ? l.amount : 0, credit: l.side === "credit" ? l.amount : 0 })) };
+  };
+  const tot = (es: LedgerEntry[]) => computeTotals(accs, summarizeEntries(es, "2026-10-01", "2026-10-31"));
+
+  it("interest-only ₹500: UPI −500, expense +500, principal unchanged", () => {
+    const t = tot([taken, repay(0, 500)]);
+    expect(t.upi).toBe(9500); expect(t.expense).toBe(500); expect(t.loans).toBe(10000);
+  });
+  it("principal-only ₹2,000: loan −2000, no expense", () => {
+    const t = tot([taken, repay(2000, 0)]);
+    expect(t.upi).toBe(8000); expect(t.expense).toBe(0); expect(t.loans).toBe(8000);
+  });
+  it("combined ₹2,000 + ₹500: cash out = 2500, counted once", () => {
+    const t = tot([taken, repay(2000, 500)]);
+    expect(t.upi).toBe(7500); expect(t.expense).toBe(500); expect(t.loans).toBe(8000);
+  });
+  it("zero principal and zero interest is rejected", () => {
+    expect(() => buildLines("loan_repay", 0, "loan_payable", "upi", 0, "expense")).toThrow();
+    expect(() => buildLines("income", 0, "upi", "income")).toThrow();
   });
 });
