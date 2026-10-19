@@ -36,12 +36,17 @@ export function TxnDialog({ preset, onClose }: { preset: TxnPreset | null; onClo
     setKey(crypto.randomUUID()); setErr(null);
     if (e) {
       const lines = e.journal_lines;
-      const d = lines.find((l) => Number(l.debit) > 0); const c = lines.find((l) => Number(l.credit) > 0);
-      const base = Number(d?.debit ?? e.amount);
+      const exSub = KINDS[preset.kind].extra?.subtype;
+      const subOf = (id: string) => accounts.find((a) => a.id === id)?.subtype;
+      const exLine = exSub ? lines.find((l) => subOf(l.account_id) === exSub) : undefined;
+      const rest = lines.filter((l) => l.account_id !== exLine?.account_id);
+      const d = rest.find((l) => Number(l.debit) > 0); const c = rest.find((l) => Number(l.credit) > 0);
+      const ex = exLine ? Number(exLine.debit) + Number(exLine.credit) : 0;
+      const base = Number(e.amount) - ex;
       setDebit(d?.account_id ?? ""); setCredit(c?.account_id ?? ""); setAmount(String(base));
-      const ex = Number(e.amount) - base; setExtra(ex > 0 ? String(ex) : "");
-      const exLine = lines.find((l) => l.account_id !== d?.account_id && l.account_id !== c?.account_id);
+      setExtra(ex > 0 ? String(ex) : "");
       setExtraAcc(exLine?.account_id ?? "");
+      // Interest-only payment has no principal lines: keep the account choices from defaults.
     } else { setAmount(""); setExtra(""); setDebit(""); setCredit(""); setExtraAcc(""); }
   }, [preset]);
 
@@ -67,8 +72,9 @@ export function TxnDialog({ preset, onClose }: { preset: TxnPreset | null; onClo
   const submit = async (e: React.FormEvent) => {
     e.preventDefault(); setErr(null);
     const amt = Number(amount); const ex = Number(extra || 0);
-    if (!(amt > 0)) return setErr(tr("માન્ય રકમ દાખલ કરો"));
+    if (!Number.isFinite(amt) || !Number.isFinite(ex) || amt < 0) return setErr(tr("માન્ય રકમ દાખલ કરો"));
     if (ex < 0) return setErr(tr("વ્યાજ ઋણ ન હોઈ શકે"));
+    if (!(amt > 0) && !(def.extra && ex > 0)) return setErr(tr("માન્ય રકમ દાખલ કરો"));
     if (!debit || !credit) return setErr(tr("બંને ખાતા પસંદ કરો"));
     if (debit === credit) return setErr(tr("બંને ખાતા અલગ હોવા જોઈએ"));
     if (ex > 0 && !extraAcc) return setErr(tr("વ્યાજ ખાતું પસંદ કરો"));
