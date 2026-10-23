@@ -1,3 +1,6 @@
 - [x] Check all English content pages with saved data on desktop and phone-sized screens.
 - [ ] Correct translation and layout issues found during the checks.
 - [ ] Verify language persistence, Gujarati restoration, forms, errors, and phone layouts after corrections.
+- [x] Audit current frontend and backend: 23 regression tests, saved-ledger integrity, signed-out access, all nine signed-in screens, language reloads, loan input selections, search/filter/export, and dashboard/report balance agreement.
+- [ ] Verify successful create/edit/reverse and duplicate submissions end-to-end in isolated test data; blocked by avoiding new postings in the user's financial books.
+- [ ] Review identified edit-dialog initialization and interest-account default issues; audit request does not authorize implementation changes.
