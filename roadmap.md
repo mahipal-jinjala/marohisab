@@ -4,4 +4,4 @@
 - [x] Audit current frontend and backend: 23 regression tests, saved-ledger integrity, signed-out access, all nine signed-in screens, language reloads, loan input selections, search/filter/export, and dashboard/report balance agreement.
 - [ ] Verify successful create/edit/reverse and duplicate submissions end-to-end in isolated test data; blocked by avoiding new postings in the user's financial books.
 - [ ] Review identified edit-dialog initialization and interest-account default issues; audit request does not authorize implementation changes.
-- [ ] Fix and verify automatic From/To account selection validation without changing saved financial records.
+- [x] Fix and verify automatic From/To account selection validation: eight form regression tests and signed-in reopened-form save-request verification; intercepted posting to preserve records.
