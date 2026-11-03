@@ -59,10 +59,13 @@ export function TxnDialog({ preset, onClose }: { preset: TxnPreset | null; onClo
   const crOpts = useMemo(() => pick(def.cr, true), [def, active, section]);
   const exOpts = def.extra ? pick([def.extra.subtype], true) : [];
 
+  // Native selects display the first option even when state is empty. Use the
+  // same resolved IDs for rendering, validation and posting (including reopen).
+  const selectedDebit = debit ? (drOpts.some((a) => a.id === debit) ? debit : "") : drOpts[0]?.id ?? "";
+  const selectedCredit = credit ? (crOpts.some((a) => a.id === credit) ? credit : "") : crOpts[0]?.id ?? "";
+
   useEffect(() => {
     if (preset?.edit) return;
-    if (!drOpts.find((a) => a.id === debit)) setDebit(drOpts[0]?.id ?? "");
-    if (!crOpts.find((a) => a.id === credit)) setCredit(crOpts[0]?.id ?? "");
     if (def.extra && !exOpts.find((a) => a.id === extraAcc)) {
       const pref = exOpts.find((a) => a.name.includes(tr("વ્યાજ"))) ?? exOpts[0];
       setExtraAcc(pref?.id ?? "");
@@ -75,12 +78,12 @@ export function TxnDialog({ preset, onClose }: { preset: TxnPreset | null; onClo
     if (!Number.isFinite(amt) || !Number.isFinite(ex) || amt < 0) return setErr(tr("માન્ય રકમ દાખલ કરો"));
     if (ex < 0) return setErr(tr("વ્યાજ ઋણ ન હોઈ શકે"));
     if (!(amt > 0) && !(def.extra && ex > 0)) return setErr(tr("માન્ય રકમ દાખલ કરો"));
-    if (!debit || !credit) return setErr(tr("બંને ખાતા પસંદ કરો"));
-    if (debit === credit) return setErr(tr("બંને ખાતા અલગ હોવા જોઈએ"));
+    if (!selectedDebit || !selectedCredit) return setErr(tr("બંને ખાતા પસંદ કરો"));
+    if (selectedDebit === selectedCredit) return setErr(tr("બંને ખાતા અલગ હોવા જોઈએ"));
     if (ex > 0 && !extraAcc) return setErr(tr("વ્યાજ ખાતું પસંદ કરો"));
     try {
       await record.mutateAsync({
-        input: { kind, date, amount: amt, debit, credit, description: desc, party, section, key, extra: ex, extraAccount: ex > 0 ? extraAcc : null },
+        input: { kind, date, amount: amt, debit: selectedDebit, credit: selectedCredit, description: desc, party, section, key, extra: ex, extraAccount: ex > 0 ? extraAcc : null },
         replaces: preset?.edit?.id,
       });
       toast.success(preset?.edit ? tr("વ્યવહાર સુધાર્યો") : tr("વ્યવહાર સાચવ્યો"));
@@ -114,11 +117,11 @@ export function TxnDialog({ preset, onClose }: { preset: TxnPreset | null; onClo
               <Input className="h-12" type="date" value={date} max={todayISO()} onChange={(e) => setDate(e.target.value)} /></div>
           </div>
           <div className="space-y-1.5"><Label>{tr(def.debitLabel)}</Label>
-            <select className={selectCls} value={debit} onChange={(e) => setDebit(e.target.value)}>
-              {drOpts.length === 0 && <option value="">{tr("— પહેલા ખાતું બનાવો —")}</option>}{drOpts.map(opt)}</select></div>
+            <select className={selectCls} value={selectedDebit} onChange={(e) => setDebit(e.target.value)}>
+              {!selectedDebit && <option value="">{tr("— પહેલા ખાતું બનાવો —")}</option>}{drOpts.map(opt)}</select></div>
           <div className="space-y-1.5"><Label>{tr(def.creditLabel)}</Label>
-            <select className={selectCls} value={credit} onChange={(e) => setCredit(e.target.value)}>
-              {crOpts.length === 0 && <option value="">{tr("— પહેલા ખાતું બનાવો —")}</option>}{crOpts.map(opt)}</select></div>
+            <select className={selectCls} value={selectedCredit} onChange={(e) => setCredit(e.target.value)}>
+              {!selectedCredit && <option value="">{tr("— પહેલા ખાતું બનાવો —")}</option>}{crOpts.map(opt)}</select></div>
           {def.extra && (
             <div className="grid grid-cols-2 gap-3 rounded-xl bg-muted p-3">
               <div className="space-y-1.5"><Label>{tr(def.extra.label)} (₹)</Label>
