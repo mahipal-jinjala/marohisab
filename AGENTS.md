@@ -13,3 +13,4 @@
 - Edits/deletes are reversals, never row updates/deletes — keeps an audit trail and balanced books.
 - Allowed debit/credit account subtypes per transaction kind live in both the DB `kind_rule` and `src/lib/accounting.ts` KINDS; keep them in sync.
 - Application UI and service errors use the centralized language dictionary; preserve user-entered financial text rather than translating saved records.
+- Transaction account dropdowns, validation and posting share resolved eligible account IDs, so automatic selections work without manual interaction.
