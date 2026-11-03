@@ -35,7 +35,7 @@ describe("Transaction account selection", () => {
     view.rerender(<TxnDialog preset={{ kind: "loan_taken" }} onClose={onClose} />);
     submit();
     await waitFor(() => expect(state.save).toHaveBeenCalledOnce());
-    expect(state.save.mock.calls[0][0].input).toMatchObject({ debit: "upi", credit: "loan", amount: 10000 });
+    expect(state.save.mock.calls[0]?.[0].input).toMatchObject({ debit: "upi", credit: "loan", amount: 10000 });
     expect(screen.queryByText("બંને ખાતા પસંદ કરો")).not.toBeInTheDocument();
   });
 
@@ -46,13 +46,13 @@ describe("Transaction account selection", () => {
     view.rerender(<TxnDialog preset={{ kind: "loan_taken" }} onClose={vi.fn()} />);
     submit();
     await waitFor(() => expect(state.save).toHaveBeenCalledOnce());
-    expect(state.save.mock.calls[0][0].input).toMatchObject({ debit: "upi", credit: "loan" });
+    expect(state.save.mock.calls[0]?.[0].input).toMatchObject({ debit: "upi", credit: "loan" });
   });
 
   it.each(["receiving", "loan", "archived", "wrong subtype"])("rejects a missing or invalid %s account", (missing) => {
     if (missing === "receiving") state.accounts = [account("loan", "loan_payable")];
     if (missing === "loan") state.accounts = [account("upi", "upi")];
-    if (missing === "archived") state.accounts[1].is_archived = true;
+    if (missing === "archived") state.accounts = [account("upi", "upi"), { ...account("loan", "loan_payable"), is_archived: true }];
     if (missing === "wrong subtype") state.accounts[1] = account("loan", "bank");
     render(<TxnDialog preset={{ kind: "loan_taken" }} onClose={vi.fn()} />);
     submit();
@@ -64,10 +64,12 @@ describe("Transaction account selection", () => {
     state.accounts = [account("upi", "upi"), account("bank", "bank")];
     render(<TxnDialog preset={{ kind: "transfer" }} onClose={vi.fn()} />);
     const selects = screen.getAllByRole("combobox");
-    fireEvent.change(selects[2], { target: { value: "bank" } });
+    const toAccount = selects[2];
+    if (!toAccount) throw new Error("To account dropdown missing");
+    fireEvent.change(toAccount, { target: { value: "bank" } });
     submit();
     await waitFor(() => expect(state.save).toHaveBeenCalledOnce());
-    expect(state.save.mock.calls[0][0].input).toMatchObject({ debit: "bank", credit: "upi" });
+    expect(state.save.mock.calls[0]?.[0].input).toMatchObject({ debit: "bank", credit: "upi" });
   });
 
   it("still rejects the same account on both sides", () => {
