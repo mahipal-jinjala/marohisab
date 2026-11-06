@@ -87,8 +87,10 @@ describe("Transaction account selection", () => {
     const view = render(<TxnDialog preset={{ kind: "loan_taken" }} onClose={vi.fn()} />);
     fireEvent.change(screen.getByRole("spinbutton"), { target: { value: "7000" } });
     fireEvent.click(screen.getByRole("button", { name: "+ નવી લોન" }));
-    fireEvent.change(await screen.findByLabelText("નામ"), { target: { value: "newloan" } });
-    fireEvent.submit(screen.getByLabelText("નામ").closest("form")!);
+    const dlg = await screen.findByRole("dialog", { name: "+ નવી લોન" });
+    const nameInput = dlg.querySelector("input")!;
+    fireEvent.change(nameInput, { target: { value: "newloan" } });
+    fireEvent.submit(nameInput.closest("form")!);
     await waitFor(() => expect(state.create).toHaveBeenCalledOnce());
     view.rerender(<TxnDialog preset={{ kind: "loan_taken" }} onClose={vi.fn()} />);
     expect((screen.getByRole("spinbutton") as HTMLInputElement).value).toBe("7000");
