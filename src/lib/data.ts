@@ -106,11 +106,17 @@ export function useCreateAccount() {
   return useMutation({
     mutationFn: async (a: Pick<Account, "name" | "subtype" | "section"> & { party?: string; interest_rate?: number | null }) => {
       const { data: u } = await supabase.auth.getUser();
-      const { error } = await supabase.from("accounts").insert({
-        name: a.name.trim(), subtype: a.subtype, section: a.section, type: "asset",
+      const name = a.name.trim();
+      // Avoid duplicates: reuse an existing active account with the same name, type and section.
+      const { data: existing } = await supabase.from("accounts").select("id")
+        .eq("name", name).eq("subtype", a.subtype).eq("section", a.section).eq("is_archived", false).limit(1);
+      if (existing?.[0]) return { id: existing[0].id as string, existed: true };
+      const { data, error } = await supabase.from("accounts").insert({
+        name, subtype: a.subtype, section: a.section, type: "asset",
         party: a.party || null, interest_rate: a.interest_rate ?? null, user_id: u.user!.id,
-      });
+      }).select("id").single();
       if (error) throw error;
+      return { id: data.id as string, existed: false };
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["accounts"] }),
   });
