@@ -59,7 +59,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="font-display text-xl font-bold text-primary">{tr("મારો હિસાબ")}</span>
             <Button variant="ghost" size="icon" aria-label={tr("બહાર નીકળો")} onClick={logout}><LogOut className="size-5" /></Button>
           </header>
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-4 md:px-8 md:pb-10 md:pt-16">{children}</main>
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-4 md:px-8 md:pb-10 md:pt-16"><QuickActionBar onOpen={setPreset} />{children}</main>
         </div>
 
         <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t bg-card pb-[env(safe-area-inset-bottom)] md:hidden">
@@ -80,6 +80,21 @@ export function AppShell({ children }: { children: ReactNode }) {
         <TxnDialog preset={preset} onClose={() => setPreset(null)} />
       </div>
     </Ctx.Provider>
+  );
+}
+
+const QUICK: { k: TxnPreset["kind"]; l: string }[] = [
+  { k: "income", l: "+ આવક" }, { k: "expense", l: "− ખર્ચ" }, { k: "loan_taken", l: "લોન લીધી" },
+  { k: "loan_repay", l: "લોન ચૂકવી" }, { k: "lend", l: "ઉધાર આપ્યું" }, { k: "invest", l: "રોકાણ" }, { k: "transfer", l: "ટ્રાન્સફર" },
+];
+
+function QuickActionBar({ onOpen }: { onOpen: (p: TxnPreset) => void }) {
+  return (
+    <div role="toolbar" aria-label={tr("ઝડપી ઉમેરો")} className="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:px-0">
+      {QUICK.map((q) => (
+        <Button key={q.k} size="sm" variant={q.k === "income" ? "default" : "outline"} className="h-10 shrink-0 rounded-full px-4" onClick={() => onOpen({ kind: q.k })}>{tr(q.l)}</Button>
+      ))}
+    </div>
   );
 }
 
