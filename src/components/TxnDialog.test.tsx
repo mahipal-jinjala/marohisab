@@ -3,14 +3,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Account } from "@/lib/accounting";
 import { TxnDialog } from "./TxnDialog";
 
-const state = vi.hoisted(() => ({ accounts: [] as Account[], save: vi.fn() }));
+const state = vi.hoisted(() => ({ accounts: [] as Account[], save: vi.fn(), create: vi.fn() }));
 vi.mock("@/lib/data", () => ({
   useAccounts: () => ({ data: state.accounts }),
   useRecord: () => ({ mutateAsync: state.save, isPending: false }),
   todayISO: () => "2026-11-03",
   errMsg: () => "Save failed",
+  useCreateAccount: () => ({ mutateAsync: state.create, isPending: false }),
+  useUpdateAccount: () => ({ mutateAsync: vi.fn(), isPending: false }),
 }));
-vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 const account = (id: string, subtype: Account["subtype"]): Account => ({
   id, name: id, subtype, type: subtype === "loan_payable" ? "liability" : "asset",
@@ -78,5 +80,21 @@ describe("Transaction account selection", () => {
     submit();
     expect(screen.getByText("બંને ખાતા અલગ હોવા જોઈએ")).toBeInTheDocument();
     expect(state.save).not.toHaveBeenCalled();
+  });
+
+  it("quick-adds a new loan account, keeps typed details and selects it", async () => {
+    state.create.mockImplementation(async () => { state.accounts = [...state.accounts, account("newloan", "loan_payable")]; return { id: "newloan", existed: false }; });
+    const view = render(<TxnDialog preset={{ kind: "loan_taken" }} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByRole("spinbutton"), { target: { value: "7000" } });
+    fireEvent.click(screen.getByRole("button", { name: "+ નવી લોન" }));
+    fireEvent.change(await screen.findByLabelText("નામ"), { target: { value: "newloan" } });
+    fireEvent.submit(screen.getByLabelText("નામ").closest("form")!);
+    await waitFor(() => expect(state.create).toHaveBeenCalledOnce());
+    view.rerender(<TxnDialog preset={{ kind: "loan_taken" }} onClose={vi.fn()} />);
+    expect((screen.getByRole("spinbutton") as HTMLInputElement).value).toBe("7000");
+    expect(state.save).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "સાચવો" }));
+    await waitFor(() => expect(state.save).toHaveBeenCalledOnce());
+    expect(state.save.mock.calls[0]?.[0].input).toMatchObject({ credit: "newloan", amount: 7000 });
   });
 });
