@@ -84,7 +84,8 @@ describe("Transaction account selection", () => {
 
   it("quick-adds a new loan account, keeps typed details and selects it", async () => {
     state.create.mockImplementation(async () => { state.accounts = [...state.accounts, account("newloan", "loan_payable")]; return { id: "newloan", existed: false }; });
-    const view = render(<TxnDialog preset={{ kind: "loan_taken" }} onClose={vi.fn()} />);
+    const preset = { kind: "loan_taken" as const }; const close = vi.fn();
+    const view = render(<TxnDialog preset={preset} onClose={close} />);
     fireEvent.change(screen.getByRole("spinbutton"), { target: { value: "7000" } });
     fireEvent.click(screen.getByRole("button", { name: "+ નવી લોન" }));
     const dlg = await screen.findByRole("dialog", { name: "+ નવી લોન" });
@@ -92,7 +93,8 @@ describe("Transaction account selection", () => {
     fireEvent.change(nameInput, { target: { value: "newloan" } });
     fireEvent.submit(nameInput.closest("form")!);
     await waitFor(() => expect(state.create).toHaveBeenCalledOnce());
-    view.rerender(<TxnDialog preset={{ kind: "loan_taken" }} onClose={vi.fn()} />);
+    view.rerender(<TxnDialog preset={preset} onClose={close} />);
+    expect(close).not.toHaveBeenCalled();
     expect((screen.getByRole("spinbutton") as HTMLInputElement).value).toBe("7000");
     expect(state.save).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: "સાચવો" }));
