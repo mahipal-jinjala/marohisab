@@ -37,9 +37,43 @@ export function AccountTable({ accounts, totals, period = false }: { accounts: A
   );
 }
 
-export function NewAccountButton({ subtypes, section = "personal", label = tr("નવું ખાતું"), withParty = false }:
-  { subtypes: Subtype[]; section?: Section; label?: string; withParty?: boolean }) {
+export function quickAddLabel(subtypes: Subtype[]): string {
+  if (subtypes.includes("loan_payable")) return tr("+ નવી લોન");
+  if (subtypes.includes("receivable") && subtypes.length === 1) return tr("+ નવું લેણું");
+  if (subtypes.includes("investment") && !subtypes.includes("cash")) return tr("+ નવું રોકાણ ખાતું");
+  if (subtypes.includes("fixed_asset") && subtypes.length === 1) return tr("+ નવી મિલકત");
+  if (subtypes.every((s) => s === "income" || s === "expense")) return tr("+ નવી કેટેગરી");
+  return tr("+ નવું ખાતું");
+}
+
+export function NewAccountButton(props: { subtypes: Subtype[]; section?: Section; label?: string; withParty?: boolean }) {
   const [open, setOpen] = useState(false);
+  const label = props.label ?? tr("નવું ખાતું");
+  return (
+    <>
+      <Button variant="outline" onClick={() => setOpen(true)}><Plus className="size-4" />{label}</Button>
+      <AccountFormDialog {...props} label={label} open={open} onOpenChange={setOpen} />
+    </>
+  );
+}
+
+/** Inline "+ add" next to an account dropdown; selects the new account after save. */
+export function QuickAddAccount({ subtypes, section, onCreated }: { subtypes: Subtype[]; section: Section; onCreated: (id: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const allowed = subtypes.filter((s) => s !== "equity");
+  if (!allowed.length) return null;
+  const label = quickAddLabel(allowed);
+  return (
+    <>
+      <button type="button" className="text-sm font-semibold text-primary hover:underline" onClick={() => setOpen(true)}>{label}</button>
+      <AccountFormDialog subtypes={allowed} section={section} label={label} withParty={allowed.some((s) => s === "loan_payable" || s === "receivable" || s === "investment")}
+        open={open} onOpenChange={setOpen} onCreated={onCreated} />
+    </>
+  );
+}
+
+export function AccountFormDialog({ subtypes, section = "personal", label = tr("નવું ખાતું"), withParty = false, open, onOpenChange: setOpen, onCreated }:
+  { subtypes: Subtype[]; section?: Section; label?: string; withParty?: boolean; open: boolean; onOpenChange: (o: boolean) => void; onCreated?: (id: string) => void }) {
   const [name, setName] = useState("");
   const [subtype, setSubtype] = useState<Subtype>(subtypes[0] ?? "cash");
   const [sec, setSec] = useState<Section>(section);
@@ -48,16 +82,19 @@ export function NewAccountButton({ subtypes, section = "personal", label = tr("�
   const create = useCreateAccount();
   const sel = "h-12 w-full rounded-xl border bg-card px-3";
   const save = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); e.stopPropagation(); // portal events bubble to a parent form
+    if (create.isPending) return;
     if (!name.trim()) { toast.error(tr("નામ દાખલ કરો")); return; }
+    if (rate && !(Number(rate) >= 0)) { toast.error(tr("માન્ય વ્યાજ દર દાખલ કરો")); return; }
     try {
-      await create.mutateAsync({ name, subtype, section: sec, party, interest_rate: rate ? Number(rate) : null });
-      toast.success(tr("ખાતું બન્યું")); setOpen(false); setName(""); setParty(""); setRate("");
+      const r = await create.mutateAsync({ name, subtype, section: sec, party, interest_rate: rate ? Number(rate) : null });
+      toast.success(r.existed ? tr("આ નામનું ખાતું પહેલેથી છે — તે પસંદ કર્યું") : tr("ખાતું બન્યું"));
+      onCreated?.(r.id);
+      setOpen(false); setName(""); setParty(""); setRate("");
     } catch (e2) { toast.error(errMsg(e2)); }
   };
   return (
     <>
-      <Button variant="outline" onClick={() => setOpen(true)}><Plus className="size-4" />{label}</Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[90dvh] overflow-y-auto">
           <DialogHeader><DialogTitle>{label}</DialogTitle></DialogHeader>

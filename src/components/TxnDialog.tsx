@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { KINDS, SECTION_LABEL, SUBTYPE_LABEL, type Kind, type Section } from "@/lib/accounting";
+import { QuickAddAccount } from "@/components/AccountsPanel";
 import { errMsg, todayISO, useAccounts, useRecord, type Entry } from "@/lib/data";
 
 export interface TxnPreset { kind: Kind; section?: Section; edit?: Entry }
@@ -116,17 +117,17 @@ export function TxnDialog({ preset, onClose }: { preset: TxnPreset | null; onClo
             <div className="space-y-1.5"><Label>{tr("તારીખ")}</Label>
               <Input className="h-12" type="date" value={date} max={todayISO()} onChange={(e) => setDate(e.target.value)} /></div>
           </div>
-          <div className="space-y-1.5"><Label>{tr(def.debitLabel)}</Label>
+          <div className="space-y-1.5"><div className="flex items-center justify-between gap-2"><Label>{tr(def.debitLabel)}</Label><QuickAddAccount subtypes={def.dr} section={section} onCreated={setDebit} /></div>
             <select className={selectCls} value={selectedDebit} onChange={(e) => setDebit(e.target.value)}>
               {!selectedDebit && <option value="">{tr("— પહેલા ખાતું બનાવો —")}</option>}{drOpts.map(opt)}</select></div>
-          <div className="space-y-1.5"><Label>{tr(def.creditLabel)}</Label>
+          <div className="space-y-1.5"><div className="flex items-center justify-between gap-2"><Label>{tr(def.creditLabel)}</Label><QuickAddAccount subtypes={def.cr} section={section} onCreated={setCredit} /></div>
             <select className={selectCls} value={selectedCredit} onChange={(e) => setCredit(e.target.value)}>
               {!selectedCredit && <option value="">{tr("— પહેલા ખાતું બનાવો —")}</option>}{crOpts.map(opt)}</select></div>
           {def.extra && (
             <div className="grid grid-cols-2 gap-3 rounded-xl bg-muted p-3">
               <div className="space-y-1.5"><Label>{tr(def.extra.label)} (₹)</Label>
                 <Input className="h-12" type="number" step="0.01" min="0" value={extra} onChange={(e) => setExtra(e.target.value)} /></div>
-              <div className="space-y-1.5"><Label>{tr("ખાતું")}</Label>
+              <div className="space-y-1.5"><div className="flex flex-wrap items-center justify-between gap-1"><Label>{tr("ખાતું")}</Label><QuickAddAccount subtypes={[def.extra.subtype]} section={section} onCreated={setExtraAcc} /></div>
                 <select className={selectCls} value={extraAcc} onChange={(e) => setExtraAcc(e.target.value)}>{exOpts.map(opt)}</select></div>
               <p className="col-span-2 text-sm text-muted-foreground">{tr("કુલ ચુકવણી")}: ₹{(Number(amount || 0) + Number(extra || 0)).toLocaleString("en-IN")}</p>
             </div>

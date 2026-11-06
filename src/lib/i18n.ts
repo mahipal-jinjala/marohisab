@@ -48,6 +48,9 @@ export function tr(s: string | null | undefined): string {
 }
 
 export const EN: Record<string, string> = {
+  "+ નવી લોન": "+ New loan", "+ નવું લેણું": "+ New receivable", "+ નવું રોકાણ ખાતું": "+ New investment account", "+ નવી મિલકત": "+ New asset",
+  "+ નવી કેટેગરી": "+ New category", "+ નવું ખાતું": "+ New account", "ઉધાર આપ્યું": "Lent money", "માન્ય વ્યાજ દર દાખલ કરો": "Enter a valid interest rate",
+  "આ નામનું ખાતું પહેલેથી છે — તે પસંદ કર્યું": "An account with this name already exists — selected it",
   "મારો હિસાબ": "My Accounts",
   "મારો હિસાબ — ગુજરાતી હિસાબ એપ": "My Accounts — Gujarati accounting app",
   "મારો હિસાબ રિપોર્ટ": "My Accounts report",
