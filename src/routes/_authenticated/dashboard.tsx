@@ -1,21 +1,15 @@
 import { tr, translatedError } from "@/lib/i18n";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, DateRange, Loading, PageHeader, Stat, useOpenTxn } from "@/components/AppShell";
 import { TxnList } from "@/components/TxnList";
-import { formatINR, type Kind } from "@/lib/accounting";
+import { formatINR } from "@/lib/accounting";
 import { monthStartISO, todayISO, useEntries, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: tr("ડેશબોર્ડ — મારો હિસાબ") }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "description", content: tr("તમારો નાણાકીય સારાંશ.") }, { property: "og:title", content: tr("ડેશબોર્ડ — મારો હિસાબ") }, { property: "og:description", content: tr("તમારો નાણાકીય સારાંશ.") }] }),
   component: Dashboard,
 });
-
-const QUICK: { k: Kind; l: string }[] = [
-  { k: "income", l: "+ આવક" }, { k: "expense", l: "− ખર્ચ" }, { k: "loan_taken", l: "લોન લીધી" },
-  { k: "loan_repay", l: "લોન ચૂકવી" }, { k: "lend", l: "ઉધાર આપ્યા" }, { k: "invest", l: "રોકાણ" }, { k: "transfer", l: "ટ્રાન્સફર" },
-];
 
 function Dashboard() {
   const [from, setFrom] = useState(monthStartISO());
@@ -48,11 +42,6 @@ function Dashboard() {
           </div>
         </>
       )}
-      <Card title={tr("ઝડપી ઉમેરો")}>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-          {QUICK.map((q) => <Button key={q.k} size="lg" variant={q.k === "income" ? "default" : "outline"} className="min-h-14 h-auto whitespace-normal py-3 text-base" onClick={() => open({ kind: q.k })}>{tr(q.l)}</Button>)}
-        </div>
-      </Card>
       <Card title={tr("તાજેતરના વ્યવહારો")}>
         {recent.isLoading ? <Loading /> : <TxnList entries={recent.data ?? []} accounts={accounts} onEdit={open} />}
       </Card>
