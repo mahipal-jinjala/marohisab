@@ -127,6 +127,19 @@ export function computeTotals(accounts: Account[], rows: SummaryRow[]): Totals {
   return t;
 }
 
+export interface SpendRow { account: Account; amount: number; share: number }
+
+/** Expense accounts by period spend, largest first; share is of total period expense. */
+export function spendingByCategory(accounts: Account[], totals: Totals): SpendRow[] {
+  const rows = accounts
+    .filter((a) => a.type === "expense")
+    .map((a) => ({ account: a, amount: Math.max(0, totals.balances.get(a.id)?.period ?? 0) }))
+    .filter((r) => r.amount > 0.004)
+    .sort((x, y) => y.amount - x.amount);
+  const total = rows.reduce((s, r) => s + r.amount, 0);
+  return rows.map((r) => ({ ...r, share: total > 0 ? r.amount / total : 0 }));
+}
+
 const inr = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 });
 export const formatINR = (n: number) => (n < 0 ? "-₹" : "₹") + inr.format(Math.abs(Math.round(n * 100) / 100));
 

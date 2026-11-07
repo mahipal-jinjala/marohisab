@@ -2,7 +2,7 @@ import { tr } from "@/lib/i18n";
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
-  LayoutDashboard, List, Wallet, HandCoins, TrendingUp, Milk, Home, ShoppingBasket, BarChart3, LogOut, Plus, PanelLeftClose, PanelLeft,
+  LayoutDashboard, List, Wallet, HandCoins, TrendingUp, Milk, Home, ShoppingBasket, BarChart3, LogOut, Plus, PanelLeftClose, PanelLeft, PiggyBank,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ export const useOpenTxn = () => useContext(Ctx);
 
 const NAV = [
   { to: "/dashboard", label: "ડેશબોર્ડ", icon: LayoutDashboard },
+  { to: "/money-out", label: "પૈસા ક્યાં ગયા", icon: PiggyBank },
   { to: "/transactions", label: "વ્યવહારો", icon: List },
   { to: "/accounts", label: "ખાતાં", icon: Wallet },
   { to: "/loans", label: "લોન / ઉધાર", icon: HandCoins },
@@ -22,7 +23,7 @@ const NAV = [
   { to: "/dairy", label: "ભેંસ ડેરી", icon: Milk },
   { to: "/reports", label: "રિપોર્ટ", icon: BarChart3 },
 ] as const;
-const MOBILE = ["/dashboard", "/transactions", "/loans", "/reports"];
+const MOBILE = ["/dashboard", "/money-out", "/transactions", "/loans", "/reports"];
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [preset, setPreset] = useState<TxnPreset | null>(null);

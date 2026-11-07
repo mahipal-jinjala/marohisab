@@ -124,6 +124,13 @@ export const EN: Record<string, string> = {
   "બાકી વ્યક્તિગત લોન": "Outstanding personal loans", "લોન બાદ કર્યા પછીની કમાણી": "Earnings after deducting loans",
   "લેણું": "Receivables", "લેણું (ઉધાર આપેલ) ": "Receivables", "કુલ દેવું": "Total liabilities", "નેટ વર્થ": "Net worth",
   "ભેંસ ડેરી નફો / નુકસાન": "Buffalo dairy profit / loss", "ઘર વેરેન્ટેજ ખર્ચ": "Home expenses", "ઝડપી ઉમેરો": "Quick add", "તાજેતરના વ્યવહારો": "Recent transactions",
+  // money-out (પૈસા ક્યાં ગયા)
+  "પૈસા ક્યાં ગયા": "Where money went", "પૈસા ક્યાં ગયા — મારો હિસાબ": "Where money went — My Accounts",
+  "કઈ કેટેગરીમાં કેટલા પૈસા વપરાયા — સરળ દેખાવ.": "How much was spent in each category — a simple view.",
+  "કુલ આવક": "Total income", "કુલ ખર્ચ": "Total expense", "બચત / કમાણી": "Savings / earnings",
+  "કઈ કેટેગરીમાં કેટલા વપરાયા": "Spending by category", "આ સમયગાળામાં કોઈ ખર્ચ નથી": "No expenses in this period",
+  "હવે પાસે કેટલા પૈસા છે": "Money you have now", "વિગત જુઓ →": "See details →",
+  "ટ્રાન્સફર, લોન ચૂકવણી અને રોકાણ ખર્ચમાં ગણાતા નથી — અહીં ફક્ત સાચો ખર્ચ બતાવ્યો છે.": "Transfers, loan repayments and investments are not counted as expenses — only true spending is shown here.",
   // accounts page
   "મિલકત (Assets)": "Assets", "દેવું (Liabilities)": "Liabilities", "આવક — આ મહિને": "Income — this month", "ખર્ચ — આ મહિને": "Expenses — this month",
   "ખાતાં (ચાર્ટ ઓફ એકાઉન્ટ્સ)": "Accounts (chart of accounts)", "શરૂઆતનું બેલેન્સ": "Opening balance", "નવું ખાતું / કેટેગરી": "New account / category", "નવું ખાતું": "New account",
