@@ -1,9 +1,9 @@
 import { tr, translatedError } from "@/lib/i18n";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Card, DateRange, Loading, PageHeader, Stat, useOpenTxn } from "@/components/AppShell";
 import { TxnList } from "@/components/TxnList";
-import { formatINR } from "@/lib/accounting";
+import { formatINR, spendingByCategory } from "@/lib/accounting";
 import { monthStartISO, todayISO, useEntries, useTotals } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -41,6 +41,20 @@ function Dashboard() {
             <Stat label={tr("ઘર વેરેન્ટેજ ખર્ચ")} value={formatINR(t.bySection.ghar.expense)} />
           </div>
         </>
+      )}
+      {!isLoading && t && (
+        <Card title={tr("પૈસા ક્યાં ગયા")} action={<Link to="/money-out" className="text-sm font-semibold text-primary hover:underline">{tr("વિગત જુઓ →")}</Link>}>
+          {spendingByCategory(accounts, t).length === 0 ? <p className="py-2 text-muted-foreground">{tr("આ સમયગાળામાં કોઈ ખર્ચ નથી")}</p> : (
+            <ul className="space-y-2">
+              {spendingByCategory(accounts, t).slice(0, 3).map((r) => (
+                <li key={r.account.id} className="flex items-baseline justify-between gap-2">
+                  <span className="min-w-0 truncate">{tr(r.account.name)}</span>
+                  <span className="shrink-0 font-semibold tabular-nums">{formatINR(r.amount)} <span className="text-xs font-normal text-muted-foreground">({Math.round(r.share * 100)}%)</span></span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
       )}
       <Card title={tr("તાજેતરના વ્યવહારો")}>
         {recent.isLoading ? <Loading /> : <TxnList entries={recent.data ?? []} accounts={accounts} onEdit={open} />}
